@@ -1,0 +1,74 @@
+{
+	"groups":[
+    {
+        "employee": [
+            {
+                "name": "John",
+                "tasks": [
+                    {
+                        "deadline": "21.02",
+                        "readiness": "no",
+                        "task_name": "make smth"
+                    },
+                    {
+                        "deadline": "22.02",
+                        "readiness": "yes",
+                        "task_name": "make smth_1"
+                    }
+                ]
+            },
+            {
+                "name": "Sara",
+                "tasks": [
+                    {
+                        "deadline": "21.02",
+                        "readiness": "no",
+                        "task_name": "make smth"
+                    }
+                ]
+            },
+            {
+                "name": "Sara3",
+                "tasks": [
+                    {
+                        "deadline": "21.02",
+                        "readiness": "no",
+                        "task_name": "make smth"
+                    }
+                ]
+            }
+        ],
+        "group_name": "first_group"
+    },
+    {
+        "employee": [
+            {
+                "name": "John1",
+                "tasks": [
+                    {
+                        "deadline": "21.02",
+                        "readiness": "no",
+                        "task_name": "make smth"
+                    },
+                    {
+                        "deadline": "22.02",
+                        "readiness": "yes",
+                        "task_name": "make smth_1"
+                    }
+                ]
+            },
+            {
+                "name": "Sara1",
+                "tasks": [
+                    {
+                        "deadline": "21.02",
+                        "readiness": "no",
+                        "task_name": "make smth"
+                    }
+                ]
+            }
+        ],
+        "group_name": "second_froup"
+    }
+]
+}
