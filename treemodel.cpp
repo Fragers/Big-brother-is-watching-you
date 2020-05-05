@@ -23,7 +23,9 @@ TreeModel::TreeModel(const QStringList &headers, QJsonDocument &data, QObject *p
       //Данные о строках модели разделены переводом строки
 }
 
-
+TreeItem* TreeModel::getRoot(){
+    return rootItem;
+}
 
 TreeModel::~TreeModel() { delete rootItem; }
 
@@ -113,6 +115,7 @@ QVariant TreeModel::data (const QModelIndex &index, int role) const {
 
 
     return item->data(index.column());
+
 }
 
 
@@ -323,6 +326,13 @@ bool TreeModel::setData(const QModelIndex &index, const QVariant &value, int rol
     bool result = item->setData(index.column(), value);
     QModelIndex gr = parent(index);
 
+
+
+    if(gr.isValid())
+        emit dataChanged(gr, gr);
+    if (result) {
+        emit dataChanged(index, index);
+    }
     chartData.clear();
     TreeItem* root = rootItem;
     int chCount = root->childCount();
@@ -335,12 +345,6 @@ bool TreeModel::setData(const QModelIndex &index, const QVariant &value, int rol
         double dPer = per.toDouble();
         chartData.push_back(qMakePair(grName, dPer));
 
-    }
-
-    if(gr.isValid())
-        emit dataChanged(gr, gr);
-    if (result) {
-        emit dataChanged(index, index);
     }
     return result;
 }
@@ -357,6 +361,19 @@ bool TreeModel::setHeaderData(int section, Qt::Orientation orientation,
  if (result) {
   emit headerDataChanged(orientation, section, section);
  }
+ chartData.clear();
+ TreeItem* root = rootItem;
+ int chCount = root->childCount();
+
+ for(int i = 0; i < chCount; i++){
+     TreeItem* cur =  root->child(i);
+     QString per = cur->data(2).toString();
+     QString grName = cur->data(0).toString();
+     per.resize(per.size()-1);
+     double dPer = per.toDouble();
+     chartData.push_back(qMakePair(grName, dPer));
+
+ }
  return result;
 }
 
@@ -367,6 +384,19 @@ bool TreeModel::insertColumns(int position, int columns, const QModelIndex &pare
  beginInsertColumns(parent, position, position + columns - 1);
  success = rootItem->insertColumns(position, columns);
  endInsertColumns();
+ chartData.clear();
+ TreeItem* root = rootItem;
+ int chCount = root->childCount();
+
+ for(int i = 0; i < chCount; i++){
+     TreeItem* cur =  root->child(i);
+     QString per = cur->data(2).toString();
+     QString grName = cur->data(0).toString();
+     per.resize(per.size()-1);
+     double dPer = per.toDouble();
+     chartData.push_back(qMakePair(grName, dPer));
+
+ }
  return success;
 }
 
@@ -378,6 +408,19 @@ bool TreeModel::insertRows(int position, int rows, const QModelIndex &parent) {
  beginInsertRows(parent, position, position + rows - 1);
  success = parentItem->insertChildren(position, rows, rootItem->columnCount());
  endInsertRows();
+ chartData.clear();
+ TreeItem* root = rootItem;
+ int chCount = root->childCount();
+
+ for(int i = 0; i < chCount; i++){
+     TreeItem* cur =  root->child(i);
+     QString per = cur->data(2).toString();
+     QString grName = cur->data(0).toString();
+     per.resize(per.size()-1);
+     double dPer = per.toDouble();
+     chartData.push_back(qMakePair(grName, dPer));
+
+ }
  return success;
 }
 
@@ -389,6 +432,19 @@ bool TreeModel::removeColumns(int position, int columns, const QModelIndex &pare
  success = rootItem->removeColumns(position, columns);
  endRemoveColumns();
  if (rootItem->columnCount() == 0) removeRows(0, rowCount());
+ chartData.clear();
+ TreeItem* root = rootItem;
+ int chCount = root->childCount();
+
+ for(int i = 0; i < chCount; i++){
+     TreeItem* cur =  root->child(i);
+     QString per = cur->data(2).toString();
+     QString grName = cur->data(0).toString();
+     per.resize(per.size()-1);
+     double dPer = per.toDouble();
+     chartData.push_back(qMakePair(grName, dPer));
+
+ }
  return success;
 }
 
@@ -400,6 +456,19 @@ bool TreeModel::removeRows(int position, int rows, const QModelIndex &parent) {
  beginRemoveRows(parent, position, position + rows - 1);
  success = parentItem->removeChildren(position, rows);
  endRemoveRows();
+ chartData.clear();
+ TreeItem* root = rootItem;
+ int chCount = root->childCount();
+
+ for(int i = 0; i < chCount; i++){
+     TreeItem* cur =  root->child(i);
+     QString per = cur->data(2).toString();
+     QString grName = cur->data(0).toString();
+     per.resize(per.size()-1);
+     double dPer = per.toDouble();
+     chartData.push_back(qMakePair(grName, dPer));
+
+ }
  return success;
 }
 

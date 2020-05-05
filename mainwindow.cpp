@@ -59,7 +59,20 @@ MainWindow::~MainWindow()
 void MainWindow::showChart(){
 
 
-    chartData = model1->getChartData();
+//    chartData = model1->getChartData();
+    chartData.clear();
+    TreeItem* root = model1->getRoot();
+    int chCount = root->childCount();
+
+    for(int i = 0; i < chCount; i++){
+        TreeItem* cur =  root->child(i);
+        QString per = cur->data(2).toString();
+        QString grName = cur->data(0).toString();
+        per.resize(per.size()-1);
+        double dPer = per.toDouble();
+        chartData.push_back(qMakePair(grName, dPer));
+
+    }
     qDebug() << chartData.size();
     window = new chart(this, chartData);
     window->show();

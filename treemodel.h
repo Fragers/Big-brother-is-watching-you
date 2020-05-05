@@ -78,6 +78,7 @@ class TreeModel : public QAbstractItemModel {
     QVector<QPair<QString, double>> getChartData();
     QVector<int>tst;
     TreeItem *getItem(const QModelIndex &index) const;
+    TreeItem* getRoot();
 private:
 
   //внутренний метод для установки данных модели
