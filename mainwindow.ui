@@ -99,6 +99,7 @@
     </property>
     <addaction name="action_Save"/>
     <addaction name="action_Open"/>
+    <addaction name="actionShow_Chart"/>
    </widget>
    <addaction name="menu_flie"/>
   </widget>
@@ -111,6 +112,11 @@
   <action name="action_Open">
    <property name="text">
     <string>&amp;Open</string>
+   </property>
+  </action>
+  <action name="actionShow_Chart">
+   <property name="text">
+    <string>Show Chart</string>
    </property>
   </action>
  </widget>

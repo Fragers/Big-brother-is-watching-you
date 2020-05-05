@@ -29,6 +29,13 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="ConnectTo">
+         <property name="text">
+          <string>Connect</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QPushButton" name="insertColumnAction">
          <property name="text">
           <string>+столбец</string>
@@ -53,6 +60,13 @@
         <widget class="QPushButton" name="insertChildAction">
          <property name="text">
           <string>+узел</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton">
+         <property name="text">
+          <string>Отправить файл</string>
          </property>
         </widget>
        </item>

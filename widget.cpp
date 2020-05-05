@@ -3,21 +3,23 @@
 #include "ui_widget.h"
 #include<QtWidgets>
 Widget::Widget(QWidget *parent) : QWidget(parent), ui(new Ui::Widget) {
-    ui->setupUi(this);
-    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
-    QMenuBar *mnuBar = new QMenuBar(this);
-    QMenu *pmnu = new QMenu("&File");
-    //QMenu fileMenu = menubar();
-    pmnu->addAction("&Save", this, SLOT(on_install_clicked()));
-     //Инициализируем ресурсы:
-    mnuBar->addMenu(pmnu);
 
+    ui->setupUi(this);
+
+    /*Server*/
+
+    socket = new QTcpSocket(this);
+        connect(socket, SIGNAL(readyRead()), this, SLOT(sockReady()));
+        connect(socket, SIGNAL(disconnected()), this, SLOT(sockDisc()));
+
+
+    /*Server*/
+
+    curPath = new QLabel;
 
     Q_INIT_RESOURCE(simpletreemodel);
     initModel();
-    mnuBar->show();
-    qDebug()<< mnuBar->isVisible();
-    //Осталось соединить сигналы со слотами:
+
     connect(ui->treeView->selectionModel(),SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
              this, SLOT(updateActions(const QItemSelection&,const QItemSelection&)));
 
@@ -34,27 +36,43 @@ Widget::Widget(QWidget *parent) : QWidget(parent), ui(new Ui::Widget) {
 updateActions();
 }
 
+
+Widget::~Widget()
+{
+    delete ui;
+}
+
+
+void Widget::openClicked(){
+    initModel();
+}
+
+void Widget::saveClicked(){
+
+    docToPush = model1->createFile(file1.fileName());
+}
+
 void Widget::initModel(){
-    file1.setFileName(QFileDialog::getOpenFileName(nullptr, "", ".", "*.json"));
+    if(flagGetFile == 0)
+        file1.setFileName(QFileDialog::getOpenFileName(nullptr, "", ".", "*.json"));
 
     if(file1.open(QIODevice::ReadOnly|QFile::Text)){
-        qDebug() << 1;
-        doc = QJsonDocument::fromJson(QByteArray(file1.readAll()), &docError);
+        //qDebug() << 1;
+        docToPush = file1.readAll();
+        doc = QJsonDocument::fromJson(QByteArray(docToPush), &docError);
         file1.close();
-
     }
-    QJsonArray docAr = QJsonValue(doc.object().value("groups")).toArray();
-    //qDebug() << docAr.count();
-    //Получаем предустановленное "дерево" в file:
-   // QFile file(":/default.txt");
 
-   // file.open(QIODevice::ReadOnly);
-   // //Создаем заголовки столбцов:
+    QJsonArray docAr = QJsonValue(doc.object().value("groups")).toArray();
+
     QStringList headers;
 
     headers <<  "Отчет1" << "выполнени1е" << "срок1";
+
     //Загружаем данные в модель:
+    //delete model1;
     TreeModel *model = new TreeModel(headers, doc);
+
     model1 = model;
    // file.close();
 
@@ -62,30 +80,56 @@ void Widget::initModel(){
 
     for (int column = 0; column < model->columnCount(); ++column)
         ui->treeView->resizeColumnToContents(column);
+    curPath->setText(file1.fileName());
 
+    flagGetFile = 0;
 }
 
 void Widget::insertChild() {
- //Получаем модельный индекс и модель элемента:
- QModelIndex index = ui->treeView->selectionModel()->currentIndex();
- QAbstractItemModel *model = ui->treeView->model();
- //Вставляем данные:
- if (model->columnCount(index) == 0) {
-  if (!model->insertColumn(0, index)) return;
- }
- if (!model->insertRow(0, index)) return;
- //Инициализируем их:
- for (int column = 0; column < model->columnCount(index); ++column) {
-  QModelIndex child = model->index(0, column, index);
-  model->setData(child, QVariant("Данные"), Qt::EditRole);
-  if (!model->headerData(column, Qt::Horizontal).isValid())
-   model->setHeaderData(column, Qt::Horizontal, QVariant("Столбец"), Qt::EditRole);
-  }
- //Выбираем вставленный узел:
- ui->treeView->selectionModel()->setCurrentIndex(model->index(0, 0, index),
-  QItemSelectionModel::ClearAndSelect);
- //Меняем состояние кнопок:
- updateActions();
+     //Получаем модельный индекс и модель элемента:
+    QModelIndex index = ui->treeView->selectionModel()->currentIndex();
+    QAbstractItemModel *model = ui->treeView->model();
+
+    if(model1->getType(index) == "task")
+        return;
+     //Вставляем данные:
+    TreeItem * it = model1->getItem(index);
+    index = model1->getIn(0, 0, it);
+
+    //index = it;
+    if (model->columnCount(index) == 0) {
+        if (!model->insertColumn(0, index)) return;
+    }
+    if (!model->insertRow(0, index)) return;
+     //Инициализируем их:
+    for (int column = 0; column < model->columnCount(index); ++column) {
+
+        QModelIndex child = model->index(0, column, index);
+        if(model1->getType(index) == "group"){
+            model1->setType(child, "employee");
+        }
+        if(model1->getType(index) == "employee"){
+            model1->setType(child, "task");
+        }
+
+        QString type = model1->getType(index);
+
+        if(column > 0 ) {
+            if(type == "employee")
+                model->setData(child, QVariant("Данные"), Qt::EditRole);
+            else
+                model->setData(child, QVariant(""), Qt::EditRole);
+        }else
+            model->setData(child, QVariant(model1->getType(child)), Qt::EditRole);
+
+        if (!model->headerData(column, Qt::Horizontal).isValid())
+            model->setHeaderData(column, Qt::Horizontal, QVariant("Столбец"), Qt::EditRole);
+      }
+     //Выбираем вставленный узел:
+     ui->treeView->selectionModel()->setCurrentIndex(model->index(0, 0, index),
+        QItemSelectionModel::ClearAndSelect);
+     //Меняем состояние кнопок:
+     updateActions();
 }
 
 bool Widget::insertColumn() {
@@ -99,16 +143,25 @@ bool Widget::insertColumn() {
 }
 
 void Widget::insertRow() {
-     QModelIndex index = ui->treeView->selectionModel()->currentIndex();
-     QAbstractItemModel *model = ui->treeView->model();
+    QModelIndex index = ui->treeView->selectionModel()->currentIndex();
+    QAbstractItemModel *model = ui->treeView->model();
 
-     if (!model->insertRow(index.row()+1, index.parent())) return;
-        updateActions();
+    if (!model->insertRow(index.row()+1, index.parent())) return;
+            updateActions();
 
-     for (int column = 0; column < model->columnCount(index.parent()); ++column) {
-          QModelIndex child = model->index(index.row()+1, column, index.parent());
-          model->setData(child, QVariant("Данные"), Qt::EditRole);
-      }
+    for (int column = 0; column < model->columnCount(index.parent()); ++column) {
+        QModelIndex child = model->index(index.row()+1, column, index.parent());
+        model1->setType(child, model1->getType(index));
+        if(column > 0){
+            if(model1->getType(index) == "task")
+                model->setData(child, QVariant("Данные"), Qt::EditRole);
+            else
+                model->setData(child, QVariant(""), Qt::EditRole);
+        }
+        else
+            model->setData(child, QVariant(model1->getType(index)), Qt::EditRole);
+
+    }
 }
 
 bool Widget::removeColumn() {
@@ -126,6 +179,8 @@ void Widget::removeRow() {
 }
 
 void Widget::updateActions(const QItemSelection &selected,const QItemSelection &deselected) {
+    Q_UNUSED(selected)
+    Q_UNUSED(deselected)
     updateActions();
 }
 
@@ -157,5 +212,65 @@ void Widget::updateActions() {
 
 void Widget::on_install_clicked()
 {
-    model1->createFile(file1.fileName());
+    if(socket->isOpen()){
+        socket->write("Read");
+        socket->waitForBytesWritten(2000);
+    }else{
+        QMessageBox::information(this, "Иноформация", "Соединение не установлено");
+    }
+
+
 }
+
+//Сервер
+
+void Widget::on_ConnectTo_clicked()
+{
+
+    socket->connectToHost("127.0.0.1", 5555);
+}
+
+void Widget::sockDisc(){
+    socket->deleteLater();
+}
+
+void Widget::sockReady(){
+    if(socket->waitForConnected(500)){
+        socket->waitForReadyRead(500);
+        Data = socket->readAll();
+        testDoc = QJsonDocument::fromJson(Data, &testDocError);
+        if(testDocError.errorString().toInt() == QJsonParseError::NoError){
+            if(testDoc.object().value("type").toString() == "connect" && testDoc.object().value("status").toString() == "yes"){
+                QMessageBox::information(this, "информация", "соединение установлено");
+
+            }else{
+                flagGetFile = 1;
+                qDebug() << Data;
+                if(file1.open(QIODevice::WriteOnly|QIODevice::Text)){
+                    file1.write(testDoc.toJson());
+                }
+                file1.close();
+                initModel();
+
+            }
+
+
+
+        }else
+            QMessageBox::information(this, "информация", "соединение не установлено");
+        qDebug() << Data;
+    }
+}
+
+void Widget::on_pushButton_clicked()
+{
+    if(socket->isOpen()){
+        socket->write("Write");
+        socket->waitForBytesWritten(1000);
+        socket->write(docToPush);
+    }else{
+        QMessageBox::information(this, "Иноформация", "Соединение не установлено");
+    }
+
+}
+//todo кидаем запрос на чтение в формате

@@ -58,7 +58,9 @@ class TreeModel : public QAbstractItemModel {
     bool insertRows(int position, int rows, const QModelIndex &parent = QModelIndex()) override;
     bool removeRows(int position, int rows, const QModelIndex &parent = QModelIndex()) override;
       //вставка и удаление столбцов и строк
+    void test_herni(const QModelIndex &gr) const;
 
+    QModelIndex getIn(int row, int column, TreeItem* item);
 
     QJsonArray  docAr;
     QJsonParseError docError;
@@ -69,11 +71,18 @@ class TreeModel : public QAbstractItemModel {
     QStandardItem* ageWorker;
     void setupModelData(const QJsonDocument &lines, TreeItem *parent);
 
+    QString getType(QModelIndex &index);
+    void setType(QModelIndex &index, QString type);
+
+    QVector<QPair<QString, double>> chartData;
+    QVector<QPair<QString, double>> getChartData();
+    QVector<int>tst;
+    TreeItem *getItem(const QModelIndex &index) const;
 private:
 
   //внутренний метод для установки данных модели
- TreeItem *getItem(const QModelIndex &index) const;
+
   //внутренний метод для получения элемента
- TreeItem *rootItem; //ссылка на корневой узел
+    TreeItem *rootItem; //ссылка на корневой узел
 };
 #endif // TREEMODEL_H

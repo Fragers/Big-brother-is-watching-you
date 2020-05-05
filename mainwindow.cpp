@@ -2,6 +2,12 @@
 #include "treemodel.h"
 #include "ui_mainwindow.h"
 #include<QtWidgets>
+#include"chart.h"
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QStatusBar>
+#include <QtCharts/QChartView>
+#include "donutbreakdownchart.h"
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
 
     ui->setupUi(this);
@@ -35,9 +41,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     connect(ui->removeRowAction,SIGNAL(clicked()),this,SLOT(removeRow()));
 
-    connect(ui->removeColumnAction,SIGNAL(clicked()),this,SLOT(removeColumn()));
+    connect(ui->removeColumnAction, SIGNAL(clicked()),this,SLOT(removeColumn()));
 
-    connect(ui->insertChildAction,SIGNAL(clicked()),this,SLOT(insertChild()));
+    connect(ui->insertChildAction, SIGNAL(clicked()),this,SLOT(insertChild()));
+
+    connect(ui->actionShow_Chart, SIGNAL(triggered()), this, SLOT(showChart()));
      //и обновить состояние кнопок:
 updateActions();
 }
@@ -48,6 +56,15 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::showChart(){
+
+
+    chartData = model1->getChartData();
+    qDebug() << chartData.size();
+    window = new chart(this, chartData);
+    window->show();
+
+}
 
 void MainWindow::openClicked(){
     initModel();
@@ -92,26 +109,53 @@ void MainWindow::initModel(){
 }
 
 void MainWindow::insertChild() {
- //Получаем модельный индекс и модель элемента:
- QModelIndex index = ui->treeView->selectionModel()->currentIndex();
- QAbstractItemModel *model = ui->treeView->model();
- //Вставляем данные:
- if (model->columnCount(index) == 0) {
-  if (!model->insertColumn(0, index)) return;
- }
- if (!model->insertRow(0, index)) return;
- //Инициализируем их:
- for (int column = 0; column < model->columnCount(index); ++column) {
-  QModelIndex child = model->index(0, column, index);
-  model->setData(child, QVariant("Данные"), Qt::EditRole);
-  if (!model->headerData(column, Qt::Horizontal).isValid())
-   model->setHeaderData(column, Qt::Horizontal, QVariant("Столбец"), Qt::EditRole);
-  }
- //Выбираем вставленный узел:
- ui->treeView->selectionModel()->setCurrentIndex(model->index(0, 0, index),
-  QItemSelectionModel::ClearAndSelect);
- //Меняем состояние кнопок:
- updateActions();
+     //Получаем модельный индекс и модель элемента:
+    QModelIndex index = ui->treeView->selectionModel()->currentIndex();
+    QAbstractItemModel *model = ui->treeView->model();
+
+    if(model1->getType(index) == "task")
+        return;
+     //Вставляем данные:
+    //QModelIndex parInd = model1->parent(index);
+    TreeItem * parIt = static_cast<TreeItem*>(index.internalPointer());
+
+
+    index = model1->getIn(index.row(), 0, parIt);
+
+    //index = it;
+    if (model->columnCount(index) == 0) {
+        if (!model->insertColumn(0, index)) return;
+    }
+    if (!model->insertRow(0, index)) return;
+     //Инициализируем их:
+    for (int column = 0; column < model->columnCount(index); ++column) {
+
+        QModelIndex child = model->index(0, column, index);
+        if(model1->getType(index) == "group"){
+            model1->setType(child, "employee");
+        }
+        if(model1->getType(index) == "employee"){
+            model1->setType(child, "task");
+        }
+
+        QString type = model1->getType(index);
+
+        if(column > 0 ) {
+            if(type == "employee")
+                model->setData(child, QVariant("Данные"), Qt::EditRole);
+            else
+                model->setData(child, QVariant(""), Qt::EditRole);
+        }else
+            model->setData(child, QVariant(model1->getType(child)), Qt::EditRole);
+
+        if (!model->headerData(column, Qt::Horizontal).isValid())
+            model->setHeaderData(column, Qt::Horizontal, QVariant("Столбец"), Qt::EditRole);
+      }
+     //Выбираем вставленный узел:
+     ui->treeView->selectionModel()->setCurrentIndex(model->index(0, 0, index),
+        QItemSelectionModel::ClearAndSelect);
+     //Меняем состояние кнопок:
+     updateActions();
 }
 
 bool MainWindow::insertColumn() {
@@ -125,16 +169,25 @@ bool MainWindow::insertColumn() {
 }
 
 void MainWindow::insertRow() {
-     QModelIndex index = ui->treeView->selectionModel()->currentIndex();
-     QAbstractItemModel *model = ui->treeView->model();
+    QModelIndex index = ui->treeView->selectionModel()->currentIndex();
+    QAbstractItemModel *model = ui->treeView->model();
 
-     if (!model->insertRow(index.row()+1, index.parent())) return;
-        updateActions();
+    if (!model->insertRow(index.row()+1, index.parent())) return;
+            updateActions();
 
-     for (int column = 0; column < model->columnCount(index.parent()); ++column) {
-          QModelIndex child = model->index(index.row()+1, column, index.parent());
-          model->setData(child, QVariant("Данные"), Qt::EditRole);
-      }
+    for (int column = 0; column < model->columnCount(index.parent()); ++column) {
+        QModelIndex child = model->index(index.row()+1, column, index.parent());
+        model1->setType(child, model1->getType(index));
+        if(column > 0){
+            if(model1->getType(index) == "task")
+                model->setData(child, QVariant("Данные"), Qt::EditRole);
+            else
+                model->setData(child, QVariant(""), Qt::EditRole);
+        }
+        else
+            model->setData(child, QVariant(model1->getType(index)), Qt::EditRole);
+
+    }
 }
 
 bool MainWindow::removeColumn() {
@@ -152,6 +205,8 @@ void MainWindow::removeRow() {
 }
 
 void MainWindow::updateActions(const QItemSelection &selected,const QItemSelection &deselected) {
+    Q_UNUSED(selected)
+    Q_UNUSED(deselected)
     updateActions();
 }
 

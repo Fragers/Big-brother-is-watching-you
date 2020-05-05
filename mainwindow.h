@@ -17,6 +17,8 @@
 #include"treemodel.h"
 #include<QTcpSocket>
 #include<QMessageBox>
+#include "chart.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -44,14 +46,17 @@ public:
     QByteArray docToPush;
     int flagGetFile = 0;
 
+    QVector<QPair<QString, double>> chartData;
 private:
     Ui::MainWindow *ui;
+    chart *window;
 private slots: //слоты для действий, выполняемых по кнопкам
     void insertChild();
     bool insertColumn();
     void insertRow();
     bool removeColumn();
     void removeRow();
+    void showChart();
     void openClicked();
     void saveClicked();
     void on_install_clicked();
@@ -59,6 +64,7 @@ private slots: //слоты для действий, выполняемых по
     void on_ConnectTo_clicked();
 
     void on_pushButton_clicked();
+
 
 public slots: //для реализации сигнала selectionChanged у QTreeView::selectionModel
     void updateActions(const QItemSelection &,const QItemSelection &);

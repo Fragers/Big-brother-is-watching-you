@@ -7,7 +7,7 @@
 
 class TreeItem {
 public:
- explicit TreeItem (const QVector<QVariant> &data,
+     explicit TreeItem (const QVector<QVariant> &data,
      TreeItem *parentItem = 0); //Конструктор узла дерева
      ~TreeItem();               //...и деструктор
 
@@ -35,11 +35,14 @@ public:
 
      bool setData(int column, const QVariant &value); //Установить данные
 
+     QString type;
   private: //Внутреннее представление данных:
      QVector <TreeItem*> m_childItems; //Список дочерних элементов
 
      QVector <QVariant> m_itemData; //Список данных текущего узла
 
      TreeItem *m_parentItem; //Ссылка на родительский узел
+
+
 };
 #endif // TREEITEM_H
