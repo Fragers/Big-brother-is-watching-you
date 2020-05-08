@@ -18,7 +18,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         connect(socket, SIGNAL(readyRead()), this, SLOT(sockReady()));
         connect(socket, SIGNAL(disconnected()), this, SLOT(sockDisc()));
 
-
     /*Server*/
 
     curPath = new QLabel;

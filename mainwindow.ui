@@ -84,7 +84,7 @@ QPushButton::menu-indicator:pressed, QPushButton::menu-indicator:open {
          <item>
           <widget class="QPushButton" name="removeRowAction">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -122,7 +122,7 @@ QPushButton::menu-indicator:pressed, QPushButton::menu-indicator:open {
             </sizepolicy>
            </property>
            <property name="text">
-            <string>+стобец</string>
+            <string>+стобец(не трогать, алярм)</string>
            </property>
           </widget>
          </item>
@@ -135,7 +135,7 @@ QPushButton::menu-indicator:pressed, QPushButton::menu-indicator:open {
             </sizepolicy>
            </property>
            <property name="text">
-            <string>-столбец</string>
+            <string>-столбец(не трогать, алярм</string>
            </property>
           </widget>
          </item>
