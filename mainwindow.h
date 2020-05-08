@@ -51,6 +51,7 @@ public:
 private:
     Ui::MainWindow *ui;
     chart *window;
+    int hasData = 0;
 private slots: //слоты для действий, выполняемых по кнопкам
     void insertChild();
     bool insertColumn();

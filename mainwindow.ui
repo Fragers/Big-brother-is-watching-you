@@ -84,16 +84,19 @@ QPushButton::menu-indicator:pressed, QPushButton::menu-indicator:open {
          <item>
           <widget class="QPushButton" name="removeRowAction">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
            <property name="minimumSize">
             <size>
-             <width>140</width>
+             <width>160</width>
              <height>0</height>
             </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true"/>
            </property>
            <property name="text">
             <string>-строка</string>
@@ -155,29 +158,10 @@ QPushButton::menu-indicator:pressed, QPushButton::menu-indicator:open {
           <bool>false</bool>
          </property>
          <property name="styleSheet">
-          <string notr="true">QTreeView {
-    show-decoration-selected: 1;
+          <string notr="true">QTreeView{
+	background: #666666;
+	alternate-background-color: #606060;
 }
-
-
-
-QTreeView::item:hover {
-    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #e7effd, stop: 1 #434B4D);
-    border: 1px solid #434B4D;
-}
-
-QTreeView::item:selected {
-    border: 1px solid #434B4D
-}
-
-QTreeView::item:selected:active{
-    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #6ea1f1, stop: 1 #434B4D);
-}
-
-QTreeView::item:selected:!active {
-    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #6b9be8, stop: 1 #434B4D);
-}
-
 QTreeView::branch:has-siblings:!adjoins-item {
     border-image: url(:/vline.png) 0;
 }
@@ -334,9 +318,31 @@ QMenu::item:selected { /* when user selects item using mouse or keyboard */
     </property>
     <addaction name="action_Save"/>
     <addaction name="action_Open"/>
-    <addaction name="actionShow_Chart"/>
+   </widget>
+   <widget class="QMenu" name="menuOther">
+    <property name="styleSheet">
+     <string notr="true">QMenu {
+    background-color: grey; /* sets background of the menu */
+    border: 1px solid black;
+}
+
+QMenu::item {
+    /* sets background of menu item. set this to something non-transparent
+        if you want menu color and menu item color to be different */
+    background-color: transparent;
+}
+
+QMenu::item:selected { /* when user selects item using mouse or keyboard */
+    background-color: #2F4F4F;
+}</string>
+    </property>
+    <property name="title">
+     <string>Other</string>
+    </property>
+    <addaction name="actionShow_chart"/>
    </widget>
    <addaction name="menu_flie"/>
+   <addaction name="menuOther"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="action_Save">
@@ -352,6 +358,11 @@ QMenu::item:selected { /* when user selects item using mouse or keyboard */
   <action name="actionShow_Chart">
    <property name="text">
     <string>Show Chart</string>
+   </property>
+  </action>
+  <action name="actionShow_chart">
+   <property name="text">
+    <string>Show chart</string>
    </property>
   </action>
  </widget>

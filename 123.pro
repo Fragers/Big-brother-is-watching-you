@@ -54,14 +54,3 @@ INSTALLS += target
 RESOURCES += \
     simpletreemodel.qrc
 
-DISTFILES += \
-    ../branch-closed.png \
-    ../branch-end.png \
-    ../branch-more.png \
-    ../branch-open.png \
-    ../vline.png \
-    branch-closed.png \
-    branch-end.png \
-    branch-more.png \
-    branch-open.png \
-    vline.png

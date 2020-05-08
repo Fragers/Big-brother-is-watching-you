@@ -2,6 +2,7 @@
 #include "treemodel.h"
 #include "ui_mainwindow.h"
 #include<QtWidgets>
+#include <QAction>
 #include"chart.h"
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMainWindow>
@@ -44,7 +45,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     connect(ui->insertChildAction, SIGNAL(clicked()),this,SLOT(insertChild()));
 
-    connect(ui->actionShow_Chart, SIGNAL(triggered()), this, SLOT(showChart()));
+    connect(ui->actionShow_chart, SIGNAL(triggered()), this, SLOT(showChart()));
+
+    /*ShortCuts*/
+    ui->action_Save->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_S));
+    ui->action_Open->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_O));
+    /*ShortCuts*/
+
+
+
      //и обновить состояние кнопок:
 updateActions();
 }
@@ -96,8 +105,11 @@ void MainWindow::initModel(){
         docToPush = file1.readAll();
         doc = QJsonDocument::fromJson(QByteArray(docToPush), &docError);
         file1.close();
-    }else
-        exit(0);
+    }else{
+        if(!hasData)
+            exit(0);
+    }
+
 
 
     QJsonArray docAr = QJsonValue(doc.object().value("groups")).toArray();
@@ -128,6 +140,7 @@ void MainWindow::initModel(){
 
     flagGetFile = 0;
     updateActions();
+    hasData = 1;
 }
 
 void MainWindow::insertChild() {
