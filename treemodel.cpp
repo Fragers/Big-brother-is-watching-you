@@ -130,9 +130,20 @@ TreeItem *TreeModel::getItem(const QModelIndex &index) const {
 
 
 
+bool TreeModel::checkEdit(const QModelIndex &index) const{
+    TreeItem *parentItem = getItem(index);
+
+    return (parentItem->type == "task" || index.column() == 0);
+}
+
+
+
 Qt::ItemFlags TreeModel::flags(const QModelIndex &index) const {
  if (!index.isValid()) return 0;
- return Qt::ItemIsEditable | QAbstractItemModel::flags(index);
+ if(checkEdit(index))
+    return Qt::ItemIsEditable | QAbstractItemModel::flags(index);
+ else
+    return QAbstractItemModel::flags(index);
 }
 
 QModelIndex TreeModel::getIn(int row, int column, TreeItem *item){
@@ -183,6 +194,7 @@ void TreeModel::setupModelData(const QJsonDocument &lines, TreeItem *parent) {
 
     docAr = QJsonValue(lines.object().value("groups")).toArray();
   //  qDebug() << docAr.count();
+    wtfIDid = docAr.count();
     for(int i = 0; i < docAr.count(); i++){                                                                    //группы
         QVariant group_names =  docAr.at(i).toObject().value("group_name").toString();
         QVariant group_persents = docAr.at(i).toObject().value("group_persent").toString();
@@ -247,6 +259,10 @@ void TreeModel::setupModelData(const QJsonDocument &lines, TreeItem *parent) {
 
     }
 
+}
+
+bool TreeModel::checkNotEmpty(){
+    return wtfIDid != 0 ? true : false;
 }
 
 QByteArray TreeModel::createFile(QString path_name) const{
@@ -333,19 +349,7 @@ bool TreeModel::setData(const QModelIndex &index, const QVariant &value, int rol
     if (result) {
         emit dataChanged(index, index);
     }
-    chartData.clear();
-    TreeItem* root = rootItem;
-    int chCount = root->childCount();
 
-    for(int i = 0; i < chCount; i++){
-        TreeItem* cur =  root->child(i);
-        QString per = cur->data(2).toString();
-        QString grName = cur->data(0).toString();
-        per.resize(per.size()-1);
-        double dPer = per.toDouble();
-        chartData.push_back(qMakePair(grName, dPer));
-
-    }
     return result;
 }
 
@@ -361,19 +365,7 @@ bool TreeModel::setHeaderData(int section, Qt::Orientation orientation,
  if (result) {
   emit headerDataChanged(orientation, section, section);
  }
- chartData.clear();
- TreeItem* root = rootItem;
- int chCount = root->childCount();
 
- for(int i = 0; i < chCount; i++){
-     TreeItem* cur =  root->child(i);
-     QString per = cur->data(2).toString();
-     QString grName = cur->data(0).toString();
-     per.resize(per.size()-1);
-     double dPer = per.toDouble();
-     chartData.push_back(qMakePair(grName, dPer));
-
- }
  return result;
 }
 
@@ -384,19 +376,7 @@ bool TreeModel::insertColumns(int position, int columns, const QModelIndex &pare
  beginInsertColumns(parent, position, position + columns - 1);
  success = rootItem->insertColumns(position, columns);
  endInsertColumns();
- chartData.clear();
- TreeItem* root = rootItem;
- int chCount = root->childCount();
 
- for(int i = 0; i < chCount; i++){
-     TreeItem* cur =  root->child(i);
-     QString per = cur->data(2).toString();
-     QString grName = cur->data(0).toString();
-     per.resize(per.size()-1);
-     double dPer = per.toDouble();
-     chartData.push_back(qMakePair(grName, dPer));
-
- }
  return success;
 }
 
@@ -408,19 +388,7 @@ bool TreeModel::insertRows(int position, int rows, const QModelIndex &parent) {
  beginInsertRows(parent, position, position + rows - 1);
  success = parentItem->insertChildren(position, rows, rootItem->columnCount());
  endInsertRows();
- chartData.clear();
- TreeItem* root = rootItem;
- int chCount = root->childCount();
 
- for(int i = 0; i < chCount; i++){
-     TreeItem* cur =  root->child(i);
-     QString per = cur->data(2).toString();
-     QString grName = cur->data(0).toString();
-     per.resize(per.size()-1);
-     double dPer = per.toDouble();
-     chartData.push_back(qMakePair(grName, dPer));
-
- }
  return success;
 }
 
@@ -432,19 +400,7 @@ bool TreeModel::removeColumns(int position, int columns, const QModelIndex &pare
  success = rootItem->removeColumns(position, columns);
  endRemoveColumns();
  if (rootItem->columnCount() == 0) removeRows(0, rowCount());
- chartData.clear();
- TreeItem* root = rootItem;
- int chCount = root->childCount();
 
- for(int i = 0; i < chCount; i++){
-     TreeItem* cur =  root->child(i);
-     QString per = cur->data(2).toString();
-     QString grName = cur->data(0).toString();
-     per.resize(per.size()-1);
-     double dPer = per.toDouble();
-     chartData.push_back(qMakePair(grName, dPer));
-
- }
  return success;
 }
 
@@ -456,19 +412,7 @@ bool TreeModel::removeRows(int position, int rows, const QModelIndex &parent) {
  beginRemoveRows(parent, position, position + rows - 1);
  success = parentItem->removeChildren(position, rows);
  endRemoveRows();
- chartData.clear();
- TreeItem* root = rootItem;
- int chCount = root->childCount();
 
- for(int i = 0; i < chCount; i++){
-     TreeItem* cur =  root->child(i);
-     QString per = cur->data(2).toString();
-     QString grName = cur->data(0).toString();
-     per.resize(per.size()-1);
-     double dPer = per.toDouble();
-     chartData.push_back(qMakePair(grName, dPer));
-
- }
  return success;
 }
 

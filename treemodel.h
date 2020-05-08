@@ -79,11 +79,15 @@ class TreeModel : public QAbstractItemModel {
     QVector<int>tst;
     TreeItem *getItem(const QModelIndex &index) const;
     TreeItem* getRoot();
+    bool checkEdit(const QModelIndex &index) const;
+
+    bool checkNotEmpty();
 private:
 
   //внутренний метод для установки данных модели
 
   //внутренний метод для получения элемента
+    int wtfIDid = 0;
     TreeItem *rootItem; //ссылка на корневой узел
 };
 #endif // TREEMODEL_H

@@ -97,7 +97,9 @@ void MainWindow::initModel(){
         docToPush = file1.readAll();
         doc = QJsonDocument::fromJson(QByteArray(docToPush), &docError);
         file1.close();
-    }
+    }else
+        exit(0);
+
 
     QJsonArray docAr = QJsonValue(doc.object().value("groups")).toArray();
 
@@ -111,14 +113,22 @@ void MainWindow::initModel(){
 
     model1 = model;
    // file.close();
+    int id = QFontDatabase::addApplicationFont(":/MODERNE_SANS.ttf");
+    QString family = QFontDatabase::applicationFontFamilies(id).at(0);
+    QFont monospace(family);
 
+    ui->treeView->setFont(monospace);
     ui->treeView->setModel(model);
+
+
+    //QFont font(":/MODERNE_SANS.ttf");
 
     for (int column = 0; column < model->columnCount(); ++column)
         ui->treeView->resizeColumnToContents(column);
     curPath->setText(file1.fileName());
 
     flagGetFile = 0;
+    updateActions();
 }
 
 void MainWindow::insertChild() {
@@ -225,28 +235,114 @@ void MainWindow::updateActions(const QItemSelection &selected,const QItemSelecti
 
 void MainWindow::updateActions() {
  //Обновим состояние кнопок:
-     bool hasSelection = !ui->treeView->selectionModel()->selection().isEmpty();
+    bool hasSelection = !ui->treeView->selectionModel()->selection().isEmpty();
 
-     ui->removeRowAction->setEnabled(hasSelection);
+    ui->removeRowAction->setEnabled(hasSelection);
 
-     ui->removeColumnAction->setEnabled(hasSelection);
+    ui->removeColumnAction->setEnabled(hasSelection);
 
-     bool hasCurrent = ui->treeView->selectionModel()->currentIndex().isValid();
-     ui->insertRowAction->setEnabled(hasCurrent);
-     ui->insertColumnAction->setEnabled(hasCurrent);
-     //Покажем информацию в заголовке окна:
-     if (hasCurrent) {
-          ui->treeView->closePersistentEditor(ui->treeView->selectionModel()->currentIndex());
+    bool hasCurrent = ui->treeView->selectionModel()->currentIndex().isValid();
+    ui->insertRowAction->setEnabled(hasCurrent);
+    ui->insertColumnAction->setEnabled(hasCurrent);
+         //Покажем информацию в заголовке окна:
+    if (hasCurrent) {
+        ui->treeView->closePersistentEditor(ui->treeView->selectionModel()->currentIndex());
 
-          int row = ui->treeView->selectionModel()->currentIndex().row();
+        int row = ui->treeView->selectionModel()->currentIndex().row();
 
-          int column = ui->treeView->selectionModel()->currentIndex().column();
+        int column = ui->treeView->selectionModel()->currentIndex().column();
+        QModelIndex cur = ui->treeView->selectionModel()->currentIndex();
+        TreeItem* curItem = model1->getItem(cur);
+        QString type = model1->getType(cur);
+        QModelIndex pInd = model1->parent(cur);
+        TreeItem* parIt = model1->getItem(pInd);
+        QString parName = parIt->data(0).toString();
+        ///////////
+        if (ui->treeView->selectionModel()->currentIndex().parent().isValid())
+         this->setWindowTitle(tr("(row,col)=(%1,%2)").arg(row).arg(column));
+        else
+         this->setWindowTitle(tr("(row,col)=(%1,%2) ВЕРХ").arg(row).arg(column));
+        ///////////
+        if(type == "task"){
+            ui->insertRowAction->setText(QString("Добавить задачу для\n %1").arg(parIt->data(0).toString()));
+            ui->insertChildAction->setText("");
+            ui->removeRowAction->setText(QString("Удалить задачу\n %1").arg(curItem->data(0).toString()));
+        }
+        if(type == "group"){
+            ui->insertRowAction->setText(QString("Добавить новую группу"));
+            ui->insertChildAction->setText(QString("Добавить работника\nв группу\n %1").arg(curItem->data(0).toString()));
+            ui->removeRowAction->setText(QString("Удалить группу\n %1").arg(curItem->data(0).toString()));
 
-          if (ui->treeView->selectionModel()->currentIndex().parent().isValid())
-             this->setWindowTitle(tr("(row,col)=(%1,%2)").arg(row).arg(column));
-          else
-             this->setWindowTitle(tr("(row,col)=(%1,%2) ВЕРХ").arg(row).arg(column));
-         }
+        }
+        if(type == "employee"){
+            ui->insertRowAction->setText(QString("Добавить нового\nсотрудника в группу\n%1").arg(parName));
+            ui->insertChildAction->setText(QString("Добавить задание для\n %1").arg(curItem->data(0).toString()));
+            ui->removeRowAction->setText(QString("Удалить работника\n %1").arg(curItem->data(0).toString()));
+
+        }
+
+    }else{
+        if(model1->checkNotEmpty()){
+            TreeItem* root = model1->getRoot();
+            TreeItem* first = root->child(0);
+            QModelIndex ind = model1->getIn(0, 0, first);
+
+            ui->treeView->selectionModel()->setCurrentIndex(ind, QItemSelectionModel::Select);
+            ui->treeView->closePersistentEditor(ui->treeView->selectionModel()->currentIndex());
+        }else{
+            setNewGroup();
+            TreeItem* root = model1->getRoot();
+            TreeItem* first = root->child(0);
+            QModelIndex ind = model1->getIn(0, 0, first);
+
+            ui->treeView->selectionModel()->setCurrentIndex(ind, QItemSelectionModel::Select);
+            ui->treeView->closePersistentEditor(ui->treeView->selectionModel()->currentIndex());
+        }
+    }
+}
+
+void MainWindow::setNewGroup(){
+    //Получаем модельный индекс и модель элемента:
+    TreeItem* root = model1->getRoot();
+   QModelIndex index = model1->getIn(0, 0, root);
+   QAbstractItemModel *model = ui->treeView->model();
+
+   if(model1->getType(index) == "task")
+       return;
+    //Вставляем данные:
+   //QModelIndex parInd = model1->parent(index);
+   TreeItem * parIt = static_cast<TreeItem*>(index.internalPointer());
+
+
+   index = model1->getIn(index.row(), 0, parIt);
+
+   //index = it;
+   if (model->columnCount(index) == 0) {
+       if (!model->insertColumn(0, index)) return;
+   }
+   if (!model->insertRow(0, index)) return;
+    //Инициализируем их:
+   for (int column = 0; column < model->columnCount(index); ++column) {
+
+       QModelIndex child = model->index(0, column, index);
+
+       model1->setType(child, "group");
+
+       QString type = model1->getType(index);
+
+       if(column > 0 ) {
+               model->setData(child, QVariant(""), Qt::EditRole);
+       }else
+           model->setData(child, QVariant(model1->getType(child)), Qt::EditRole);
+
+       if (!model->headerData(column, Qt::Horizontal).isValid())
+           model->setHeaderData(column, Qt::Horizontal, QVariant("Столбец"), Qt::EditRole);
+     }
+    //Выбираем вставленный узел:
+    ui->treeView->selectionModel()->setCurrentIndex(model->index(0, 0, index),
+       QItemSelectionModel::ClearAndSelect);
+    //Меняем состояние кнопок:
+    updateActions();
 }
 
 void MainWindow::on_install_clicked()
@@ -292,9 +388,6 @@ void MainWindow::sockReady(){
                 initModel();
 
             }
-
-
-
         }else
             QMessageBox::information(this, "информация", "соединение не установлено");
         qDebug() << Data;

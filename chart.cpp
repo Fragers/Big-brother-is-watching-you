@@ -45,7 +45,7 @@ chart::chart(QWidget *parent, QVector<QPair<QString, double>> chartData) :
     donutBreakdown->setTitleFont(QFont("Arial", 15));
     donutBreakdown->legend()->setAlignment(Qt::AlignRight);
     for(QPieSeries *cur : vecSer){
-        donutBreakdown->addBreakdownSeries(cur, QColor(rand()%256+1, rand()%256+1, rand()%256+1, 120));
+        donutBreakdown->addBreakdownSeries(cur, QColor(rand()%130+30, rand()%130+1, rand()%130+30, 120));
     }
 
 

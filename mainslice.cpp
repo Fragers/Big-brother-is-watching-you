@@ -58,6 +58,8 @@ QString MainSlice::name() const
 //![2]
 void MainSlice::updateLabel()
 {
+    QFont font("Arial", 12);
+    this->setLabelFont(font);
     this->setLabel(QString("%1").arg(m_name));
 }
 //![2]
