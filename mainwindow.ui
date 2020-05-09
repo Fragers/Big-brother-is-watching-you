@@ -171,7 +171,7 @@ background-color: #404040</string>
     border: 1px solid #6c6c6c;
 }
 QTreeView{
-	background: #474747;
+	background: #404040;
 	alternate-background-color: #555555;
 	color:#ededed;
 	
@@ -312,11 +312,10 @@ QMenuBar::item {
     spacing: 3px; /* spacing between menu bar items */
     padding: 1px 4px;
     background: transparent;
-    border-radius: 4px;
 }
 
 QMenuBar::item:selected { /* when selected using mouse or keyboard */
-    background: #a8a8a8;
+    background: #575757;
 }
 
 QMenuBar::item:pressed {
@@ -351,7 +350,7 @@ QMenu::item:selected { /* when user selects item using mouse or keyboard */
     <property name="styleSheet">
      <string notr="true">QMenu {
     color: #ededed;
-	background-color: #404040 /* sets background of the menu */
+	background: #353535;  /* sets background of the menu */
     border: 1px solid black;
 }
 
