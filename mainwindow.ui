@@ -6,26 +6,50 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>855</width>
+    <width>860</width>
     <height>635</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>860</width>
+    <height>635</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>860</width>
+    <height>635</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true">	background: #202020; </string>
+   </property>
    <widget class="QWidget" name="verticalLayoutWidget_2">
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>851</width>
+      <width>861</width>
       <height>591</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_3">
      <property name="sizeConstraint">
-      <enum>QLayout::SetDefaultConstraint</enum>
+      <enum>QLayout::SetMaximumSize</enum>
      </property>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -40,41 +64,8 @@
             </sizepolicy>
            </property>
            <property name="styleSheet">
-            <string notr="true">QPushButton {
-    border: 2px solid #8f8f91;
-    border-radius: 6px;
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #f6f7fa, stop: 1 #dadbde);
-    min-width: 80px;
-}
-
-QPushButton:pressed {
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #dadbde, stop: 1 #f6f7fa);
-}
-
-QPushButton:flat {
-    border: none; /* no border for a flat push button */
-}
-
-QPushButton:default {
-    border-color: navy; /* make the default button prominent */
-}
-
-QPushButton:open { /* when the button has its menu open */
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #dadbde, stop: 1 #f6f7fa);
-}
-
-QPushButton::menu-indicator {
-    subcontrol-origin: padding;
-    subcontrol-position: bottom right;
-}
-
-QPushButton::menu-indicator:pressed, QPushButton::menu-indicator:open {
-    position: relative;
-    top: 2px; left: 2px; /* shift the arrow by 2 px */
-}</string>
+            <string notr="true">color: #ededed;
+background-color: #404040</string>
            </property>
            <property name="text">
             <string>+узел</string>
@@ -96,7 +87,8 @@ QPushButton::menu-indicator:pressed, QPushButton::menu-indicator:open {
             </size>
            </property>
            <property name="styleSheet">
-            <string notr="true"/>
+            <string notr="true">color: #ededed;
+background-color: #404040</string>
            </property>
            <property name="text">
             <string>-строка</string>
@@ -111,6 +103,10 @@ QPushButton::menu-indicator:pressed, QPushButton::menu-indicator:open {
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="styleSheet">
+            <string>color: #ededed;
+background-color: #404040</string>
+           </property>
            <property name="text">
             <string>+строка</string>
            </property>
@@ -124,6 +120,10 @@ QPushButton::menu-indicator:pressed, QPushButton::menu-indicator:open {
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="styleSheet">
+            <string>color: #ededed;
+background-color: #404040</string>
+           </property>
            <property name="text">
             <string>+стобец(не трогать, алярм)</string>
            </property>
@@ -136,6 +136,10 @@ QPushButton::menu-indicator:pressed, QPushButton::menu-indicator:open {
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="styleSheet">
+            <string>color: #ededed;
+background-color: #404040</string>
            </property>
            <property name="text">
             <string>-столбец(не трогать, алярм</string>
@@ -158,10 +162,21 @@ QPushButton::menu-indicator:pressed, QPushButton::menu-indicator:open {
           <bool>false</bool>
          </property>
          <property name="styleSheet">
-          <string notr="true">QTreeView{
-	background: #666666;
-	alternate-background-color: #606060;
+          <string notr="true">QHeaderView::section {
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #616161, stop: 0.5 #505050,
+                                      stop: 0.6 #434343, stop:1 #656565);
+    color: white;
+    padding-left: 4px;
+    border: 1px solid #6c6c6c;
 }
+QTreeView{
+	background: #474747;
+	alternate-background-color: #555555;
+	color:#ededed;
+	
+}
+
 QTreeView::branch:has-siblings:!adjoins-item {
     border-image: url(:/vline.png) 0;
 }
@@ -218,6 +233,10 @@ QTreeView::branch:open:has-children:has-siblings  {
            <height>30</height>
           </size>
          </property>
+         <property name="styleSheet">
+          <string notr="true">color: #ededed;
+background-color: #404040</string>
+         </property>
          <property name="text">
           <string>Загрузить файл</string>
          </property>
@@ -236,6 +255,10 @@ QTreeView::branch:open:has-children:has-siblings  {
            <width>0</width>
            <height>30</height>
           </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: #ededed;
+background-color: #404040</string>
          </property>
          <property name="text">
           <string>Отправить файл</string>
@@ -256,6 +279,10 @@ QTreeView::branch:open:has-children:has-siblings  {
            <height>30</height>
           </size>
          </property>
+         <property name="styleSheet">
+          <string notr="true">color: #ededed;
+background-color: #404040</string>
+         </property>
          <property name="text">
           <string>Connect</string>
          </property>
@@ -271,14 +298,14 @@ QTreeView::branch:open:has-children:has-siblings  {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>855</width>
+     <width>860</width>
      <height>17</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">QMenuBar {
-    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 lightgray, stop:1 darkgray);
+	    color: #ededed;
+    background-color: #404040
 }
 
 QMenuBar::item {
@@ -299,7 +326,8 @@ QMenuBar::item:pressed {
    <widget class="QMenu" name="menu_flie">
     <property name="styleSheet">
      <string notr="true">QMenu {
-    background-color: grey; /* sets background of the menu */
+    color: #ededed;
+	background: #353535;  /* sets background of the menu */
     border: 1px solid black;
 }
 
@@ -322,7 +350,8 @@ QMenu::item:selected { /* when user selects item using mouse or keyboard */
    <widget class="QMenu" name="menuOther">
     <property name="styleSheet">
      <string notr="true">QMenu {
-    background-color: grey; /* sets background of the menu */
+    color: #ededed;
+	background-color: #404040 /* sets background of the menu */
     border: 1px solid black;
 }
 
@@ -344,7 +373,12 @@ QMenu::item:selected { /* when user selects item using mouse or keyboard */
    <addaction name="menu_flie"/>
    <addaction name="menuOther"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QStatusBar" name="statusbar">
+   <property name="styleSheet">
+    <string notr="true">color: #ededed;
+background-color: #404040</string>
+   </property>
+  </widget>
   <action name="action_Save">
    <property name="text">
     <string>&amp;Save</string>

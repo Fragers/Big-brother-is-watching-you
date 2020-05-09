@@ -54,7 +54,7 @@ QVariant TreeModel::data (const QModelIndex &index, int role) const {
 
     if(role == Qt::BackgroundColorRole){
         if(item->type == "task" && item->data(2) == "yes")
-            return QColor("#7FFFD4");
+            return QColor(3, 166, 12, 120);
         if(item->type == "task" && item->data(2) == "no")
             return  QColor(229, 43, 80, 100);
     }
