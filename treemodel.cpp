@@ -54,7 +54,7 @@ QVariant TreeModel::data (const QModelIndex &index, int role) const {
 
     if(role == Qt::BackgroundColorRole){
         if(item->type == "task" && item->data(2) == "yes")
-            return QColor(3, 166, 12, 120);
+            return QColor("#befebe");
         if(item->type == "task" && item->data(2) == "no")
             return  QColor(229, 43, 80, 100);
     }
@@ -77,7 +77,7 @@ QVariant TreeModel::data (const QModelIndex &index, int role) const {
         QString ans = QString::number(st, 'g', 3) + "%";
         item->setData(2, ans);
         if(std::abs(st - 100) <= 0.001 && role == Qt::BackgroundColorRole)
-            return QColor(0, 128, 0, 150);
+            return QColor("#adffad");
 
     }
     tex:
@@ -98,18 +98,18 @@ QVariant TreeModel::data (const QModelIndex &index, int role) const {
         QString ans = QString::number(st, 'g', 3) + "%";
         item->setData(2, ans);
         if(std::abs(st - 100) <= 0.001 && role == Qt::BackgroundColorRole)
-            return QColor(0, 100, 0, 150);
+            return QColor("#99ff99");
 
     }
-    if(role == Qt::BackgroundColorRole){
-        if(item->type == "task" && item->data(2) == "yes"){
-            //const QModelIndex gr = parent(parent(index));
+//    if(role == Qt::BackgroundColorRole){
+//        if(item->type == "task" && item->data(2) == "yes"){
+//            //const QModelIndex gr = parent(parent(index));
 
-            return QColor("#7FFFD4");
-        }
-        if(item->type == "task" && item->data(2) == "no")
-            return  QColor(229, 43, 80, 100);
-    }
+//            return QColor("#7FFFD4");
+//        }
+//        if(item->type == "task" && item->data(2) == "no")
+//            return  QColor(229, 43, 80, 100);
+//    }
     tex1:
     if (role != Qt::DisplayRole  && role != Qt::EditRole) return QVariant();
 

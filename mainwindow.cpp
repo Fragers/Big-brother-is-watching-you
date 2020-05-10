@@ -63,7 +63,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 
      //и обновить состояние кнопок:
-updateActions();
+    updateActions();
 }
 
 void MainWindow::exitApp(){
@@ -77,12 +77,9 @@ void MainWindow::exitApp(){
     if(dia->acc == true){
         docToPush = model1->createFile(file1.fileName());
         isSaved = true;
-        close();
+        exit(0);
     }else
-        close();
-
-
-
+        exit(0);
 }
 
 MainWindow::~MainWindow()
@@ -151,14 +148,12 @@ void MainWindow::initModel(){
 
     model1 = model;
    // file.close();
-    int id = QFontDatabase::addApplicationFont(":/MODERNE_SANS.ttf");
+    int id = QFontDatabase::addApplicationFont(":/fonts/SourceSansPro-SemiBold.ttf");
     QString family = QFontDatabase::applicationFontFamilies(id).at(0);
     QFont monospace(family);
 
     ui->treeView->setFont(monospace);
     ui->treeView->setModel(model);
-
-
     //QFont font(":/MODERNE_SANS.ttf");
 
     for (int column = 0; column < model->columnCount(); ++column)

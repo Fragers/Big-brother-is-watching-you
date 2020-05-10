@@ -171,6 +171,10 @@ background-color: #404040</string>
          <property name="font">
           <font>
            <family>Allerta</family>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <italic>false</italic>
+           <bold>false</bold>
           </font>
          </property>
          <property name="autoFillBackground">
@@ -186,9 +190,10 @@ background-color: #404040</string>
     border: 1px solid #6c6c6c;
 }
 QTreeView{
-	background: #404040;
-	alternate-background-color: #555555;
-	color:#ededed;
+	background: 	#F5F5F5;
+	alternate-background-color: 	#ededed;
+	color:	#4f4f4f ;
+	font: 10pt;
 	
 }
 

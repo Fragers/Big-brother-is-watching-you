@@ -6,6 +6,17 @@
         <file>branch-end.png</file>
         <file>branch-more.png</file>
         <file>vline.png</file>
-        <file>MODERNE_SANS.ttf</file>
+        <file>fonts/Akrobat-Bold.ttf</file>
+        <file>fonts/Akrobat-Regular.ttf</file>
+        <file>fonts/MODERNE_SANS.ttf</file>
+        <file>fonts/Akrobat-Black.ttf</file>
+        <file>fonts/Akrobat-ExtraBold.ttf</file>
+        <file>fonts/Akrobat-ExtraLight.ttf</file>
+        <file>fonts/Akrobat-Light.ttf</file>
+        <file>fonts/Akrobat-SemiBold.ttf</file>
+        <file>fonts/Akrobat-Thin.ttf</file>
+        <file>fonts/SourceSansPro-Black.ttf</file>
+        <file>fonts/SourceSansPro-Bold.ttf</file>
+        <file>fonts/SourceSansPro-SemiBold.ttf</file>
     </qresource>
 </RCC>
