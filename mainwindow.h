@@ -52,6 +52,7 @@ private:
     Ui::MainWindow *ui;
     chart *window;
     int hasData = 0;
+    bool isSaved = false;
 private slots: //слоты для действий, выполняемых по кнопкам
     void insertChild();
     bool insertColumn();
@@ -67,6 +68,7 @@ private slots: //слоты для действий, выполняемых по
 
     void on_pushButton_clicked();
 
+    void exitApp();
 
 public slots: //для реализации сигнала selectionChanged у QTreeView::selectionModel
     void updateActions(const QItemSelection &,const QItemSelection &);

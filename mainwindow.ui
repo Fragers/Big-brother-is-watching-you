@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>860</width>
+    <width>900</width>
     <height>635</height>
    </rect>
   </property>
@@ -18,13 +18,13 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>860</width>
-    <height>635</height>
+    <width>892</width>
+    <height>634</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>860</width>
+    <width>900</width>
     <height>635</height>
    </size>
   </property>
@@ -43,7 +43,7 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>861</width>
+      <width>901</width>
       <height>591</height>
      </rect>
     </property>
@@ -51,8 +51,20 @@
      <property name="sizeConstraint">
       <enum>QLayout::SetMaximumSize</enum>
      </property>
+     <property name="leftMargin">
+      <number>1</number>
+     </property>
+     <property name="topMargin">
+      <number>3</number>
+     </property>
+     <property name="rightMargin">
+      <number>1</number>
+     </property>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <property name="spacing">
+        <number>1</number>
+       </property>
        <item>
         <layout class="QVBoxLayout" name="verticalLayout">
          <item>
@@ -62,6 +74,12 @@
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>160</width>
+             <height>50</height>
+            </size>
            </property>
            <property name="styleSheet">
             <string notr="true">color: #ededed;
@@ -75,7 +93,7 @@ background-color: #404040</string>
          <item>
           <widget class="QPushButton" name="removeRowAction">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -83,7 +101,7 @@ background-color: #404040</string>
            <property name="minimumSize">
             <size>
              <width>160</width>
-             <height>0</height>
+             <height>50</height>
             </size>
            </property>
            <property name="styleSheet">
@@ -103,6 +121,12 @@ background-color: #404040</string>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="minimumSize">
+            <size>
+             <width>160</width>
+             <height>50</height>
+            </size>
+           </property>
            <property name="styleSheet">
             <string>color: #ededed;
 background-color: #404040</string>
@@ -113,38 +137,17 @@ background-color: #404040</string>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="insertColumnAction">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
            </property>
-           <property name="styleSheet">
-            <string>color: #ededed;
-background-color: #404040</string>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
            </property>
-           <property name="text">
-            <string>+стобец(не трогать, алярм)</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="removeColumnAction">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="styleSheet">
-            <string>color: #ededed;
-background-color: #404040</string>
-           </property>
-           <property name="text">
-            <string>-столбец(не трогать, алярм</string>
-           </property>
-          </widget>
+          </spacer>
          </item>
         </layout>
        </item>
@@ -152,6 +155,18 @@ background-color: #404040</string>
         <widget class="QTreeView" name="treeView">
          <property name="enabled">
           <bool>true</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>715</width>
+           <height>0</height>
+          </size>
          </property>
          <property name="font">
           <font>
@@ -298,7 +313,7 @@ background-color: #404040</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>860</width>
+     <width>900</width>
      <height>17</height>
     </rect>
    </property>
@@ -343,8 +358,10 @@ QMenu::item:selected { /* when user selects item using mouse or keyboard */
     <property name="title">
      <string>&amp;File</string>
     </property>
-    <addaction name="action_Save"/>
+    <addaction name="actionNew_file"/>
     <addaction name="action_Open"/>
+    <addaction name="action_Save"/>
+    <addaction name="action_Exit"/>
    </widget>
    <widget class="QMenu" name="menuOther">
     <property name="styleSheet">
@@ -396,6 +413,16 @@ background-color: #404040</string>
   <action name="actionShow_chart">
    <property name="text">
     <string>Show chart</string>
+   </property>
+  </action>
+  <action name="actionNew_file">
+   <property name="text">
+    <string>&amp;New file</string>
+   </property>
+  </action>
+  <action name="action_Exit">
+   <property name="text">
+    <string>&amp;Exit</string>
    </property>
   </action>
  </widget>

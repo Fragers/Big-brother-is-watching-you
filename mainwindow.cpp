@@ -9,6 +9,7 @@
 #include <QtWidgets/QStatusBar>
 #include <QtCharts/QChartView>
 #include "donutbreakdownchart.h"
+#include"savedia.h"
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
 
     ui->setupUi(this);
@@ -29,6 +30,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->action_Save, SIGNAL(triggered()), this, SLOT(saveClicked()));
 
     connect(ui->action_Open, SIGNAL(triggered()), this, SLOT(openClicked()));
+
+    connect(ui->action_Exit, SIGNAL(triggered()), this, SLOT(exitApp()));
+
     Q_INIT_RESOURCE(simpletreemodel);
     initModel();
 
@@ -37,15 +41,19 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     connect(ui->insertRowAction,SIGNAL(clicked()),this,SLOT(insertRow()));
 
-    connect(ui->insertColumnAction,SIGNAL(clicked()),this,SLOT(insertColumn()));
+
+    /*columns*/
+//    connect(ui->insertColumnAction,SIGNAL(clicked()),this,SLOT(insertColumn()));
+
+//    connect(ui->removeColumnAction, SIGNAL(clicked()),this,SLOT(removeColumn()));
 
     connect(ui->removeRowAction,SIGNAL(clicked()),this,SLOT(removeRow()));
 
-    connect(ui->removeColumnAction, SIGNAL(clicked()),this,SLOT(removeColumn()));
 
     connect(ui->insertChildAction, SIGNAL(clicked()),this,SLOT(insertChild()));
 
     connect(ui->actionShow_chart, SIGNAL(triggered()), this, SLOT(showChart()));
+
 
     /*ShortCuts*/
     ui->action_Save->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_S));
@@ -58,6 +66,24 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 updateActions();
 }
 
+void MainWindow::exitApp(){
+    if(isSaved == true)
+        close();
+
+    saveDia *dia = new saveDia(this);
+
+    dia->exec();
+
+    if(dia->acc == true){
+        docToPush = model1->createFile(file1.fileName());
+        isSaved = true;
+        close();
+    }else
+        close();
+
+
+
+}
 
 MainWindow::~MainWindow()
 {
@@ -94,11 +120,12 @@ void MainWindow::openClicked(){
 void MainWindow::saveClicked(){
 
     docToPush = model1->createFile(file1.fileName());
+    isSaved = true;
 }
 
 void MainWindow::initModel(){
     if(flagGetFile == 0)
-        file1.setFileName(QFileDialog::getOpenFileName(nullptr, "", ".", "*.json"));
+        file1.setFileName(QFileDialog::getOpenFileName(nullptr, "", "./..", "*.json"));
 
     if(file1.open(QIODevice::ReadOnly|QFile::Text)){
         //qDebug() << 1;
@@ -141,6 +168,7 @@ void MainWindow::initModel(){
     flagGetFile = 0;
     updateActions();
     hasData = 1;
+    isSaved = false;
 }
 
 void MainWindow::insertChild() {
@@ -251,11 +279,11 @@ void MainWindow::updateActions() {
 
     ui->removeRowAction->setEnabled(hasSelection);
 
-    ui->removeColumnAction->setEnabled(hasSelection);
+    //ui->removeColumnAction->setEnabled(hasSelection);
 
     bool hasCurrent = ui->treeView->selectionModel()->currentIndex().isValid();
     ui->insertRowAction->setEnabled(hasCurrent);
-    ui->insertColumnAction->setEnabled(hasCurrent);
+   //ui->insertColumnAction->setEnabled(hasCurrent);
          //Покажем информацию в заголовке окна:
     if (hasCurrent) {
         ui->treeView->closePersistentEditor(ui->treeView->selectionModel()->currentIndex());

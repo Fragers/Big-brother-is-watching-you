@@ -3,11 +3,13 @@ QT += network charts
 
 HEADERS += \
     donutbreakdownchart.h \
-    mainslice.h
+    mainslice.h \
+    savedia.h
 
 SOURCES += \
     donutbreakdownchart.cpp \
-    mainslice.cpp
+    mainslice.cpp \
+    savedia.cpp
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -43,6 +45,7 @@ HEADERS += \
 FORMS += \
     chart.ui \
     mainwindow.ui \
+    savedia.ui \
     widget.ui
 
 # Default rules for deployment.
