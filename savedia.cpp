@@ -13,16 +13,22 @@ saveDia::~saveDia()
     delete ui;
 }
 
-void saveDia::on_pushButton_clicked()
+
+void saveDia::on_Cancel_clicked()
 {
-    redj = true;
-    acc = true;
+    state = "cancel";
     close();
 }
 
-void saveDia::on_pushButton_2_clicked()
+void saveDia::on_Close_clicked()
 {
-    redj = false;
-    acc = true;
+
+    state = "close";
+    close();
+}
+
+void saveDia::on_SaveAll_clicked()
+{
+    state = "save";
     close();
 }

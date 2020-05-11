@@ -35,7 +35,7 @@ public:
 
      bool setData(int column, const QVariant &value); //Установить данные
 
-     QString type = "root";
+     QString type;
   private: //Внутреннее представление данных:
      QVector <TreeItem*> m_childItems; //Список дочерних элементов
 

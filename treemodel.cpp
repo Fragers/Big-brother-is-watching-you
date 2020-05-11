@@ -195,6 +195,7 @@ void TreeModel::setupModelData(const QJsonDocument &lines, TreeItem *parent) {
     docAr = QJsonValue(lines.object().value("groups")).toArray();
   //  qDebug() << docAr.count();
     wtfIDid = docAr.count();
+    parent->type = "root";
     for(int i = 0; i < docAr.count(); i++){                                                                    //группы
         QVariant group_names =  docAr.at(i).toObject().value("group_name").toString();
         QVariant group_persents = docAr.at(i).toObject().value("group_persent").toString();

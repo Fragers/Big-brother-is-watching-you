@@ -2,7 +2,7 @@
 #define SAVEDIA_H
 
 #include <QDialog>
-
+#include <QString>
 namespace Ui {
 class saveDia;
 }
@@ -14,12 +14,14 @@ class saveDia : public QDialog
 public:
     explicit saveDia(QWidget *parent = nullptr);
     ~saveDia();
-    bool acc = false;
-    bool redj = true;
+    QString state = "cancel";
 private slots:
-    void on_pushButton_clicked();
 
-    void on_pushButton_2_clicked();
+    void on_Cancel_clicked();
+
+    void on_Close_clicked();
+
+    void on_SaveAll_clicked();
 
 private:
     Ui::saveDia *ui;

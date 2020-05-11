@@ -41,16 +41,23 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QPushButton" name="pushButton_2">
+       <widget class="QPushButton" name="SaveAll">
         <property name="text">
-         <string>Сохранить</string>
+         <string>Сохранить всё</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="Close">
         <property name="text">
-         <string>Закрыть</string>
+         <string>Не сохранять</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="Cancel">
+        <property name="text">
+         <string>Отмена</string>
         </property>
        </widget>
       </item>

@@ -53,6 +53,8 @@ private:
     chart *window;
     int hasData = 0;
     bool isSaved = false;
+    void closeEvent(QCloseEvent *event);
+    int newUpdate = 0;
 private slots: //слоты для действий, выполняемых по кнопкам
     void insertChild();
     bool insertColumn();
@@ -70,8 +72,11 @@ private slots: //слоты для действий, выполняемых по
 
     void exitApp();
 
+    void newFile();
+    void checkSaveDia();
 public slots: //для реализации сигнала selectionChanged у QTreeView::selectionModel
     void updateActions(const QItemSelection &,const QItemSelection &);
+    void updateActions2();
     void sockReady();
     void sockDisc();
 };

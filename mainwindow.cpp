@@ -10,6 +10,7 @@
 #include <QtCharts/QChartView>
 #include "donutbreakdownchart.h"
 #include"savedia.h"
+#include<QLayout>
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
 
     ui->setupUi(this);
@@ -33,11 +34,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     connect(ui->action_Exit, SIGNAL(triggered()), this, SLOT(exitApp()));
 
+    connect(ui->actionNew_file, SIGNAL(triggered()), this, SLOT(newFile()));
+
     Q_INIT_RESOURCE(simpletreemodel);
     initModel();
 
-    connect(ui->treeView->selectionModel(),SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
-             this, SLOT(updateActions(const QItemSelection&,const QItemSelection&)));
+
+//    connect(ui->treeView->selectionModel(),SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
+//             this, SLOT(updateActions(const QItemSelection&,const QItemSelection&)));
 
     connect(ui->insertRowAction,SIGNAL(clicked()),this,SLOT(insertRow()));
 
@@ -58,12 +62,69 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     /*ShortCuts*/
     ui->action_Save->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_S));
     ui->action_Open->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_O));
+    ui->action_Exit->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
+    ui->actionNew_file->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_N));
+
     /*ShortCuts*/
 
 
 
      //и обновить состояние кнопок:
     updateActions();
+}
+
+void MainWindow::checkSaveDia(){
+
+    QDialog* dia = new QDialog(this);
+    QHBoxLayout *lay = new QHBoxLayout();
+    QPushButton *yes1 = new QPushButton();
+
+    QPushButton *no1 = new QPushButton();
+    dia->setWindowTitle("Warning");
+    yes1->setText("Сохранить");
+    no1->setText("Не сохранять");
+
+    QLabel *label = new QLabel();
+    label->setText("Вы не сохранили текущий документ.");
+    label->setAlignment(Qt::AlignCenter);
+    connect(yes1, SIGNAL(clicked()), dia, SLOT(accept()));
+
+    connect(no1, SIGNAL(clicked()), dia, SLOT(reject()));
+    lay->addWidget(yes1);
+    lay->addWidget(no1);
+    QVBoxLayout *hbox = new QVBoxLayout();
+    hbox->addWidget(label);
+    hbox->addItem(lay);
+
+    dia->setLayout(hbox);
+
+    if(dia->exec() == QDialog::Accepted){
+        saveClicked();
+    }
+
+}
+
+void MainWindow::newFile(){
+
+    if(!isSaved){
+        checkSaveDia();
+    }
+
+     file1.setFileName(QFileDialog::getSaveFileName());
+     if(file1.open(QIODevice::WriteOnly|QFile::Text)){
+        file1.close();
+        flagGetFile = 1;
+        initModel();
+     }
+
+
+}
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if(isSaved == false){
+        event->ignore();
+        exitApp();
+    }
 }
 
 void MainWindow::exitApp(){
@@ -74,12 +135,19 @@ void MainWindow::exitApp(){
 
     dia->exec();
 
-    if(dia->acc == true){
+    if(dia->state == "save"){
         docToPush = model1->createFile(file1.fileName());
         isSaved = true;
         exit(0);
-    }else
+    }
+
+    if(dia->state == "cancel"){
+
+    }
+    if(dia->state == "close"){
         exit(0);
+    }
+
 }
 
 MainWindow::~MainWindow()
@@ -104,14 +172,20 @@ void MainWindow::showChart(){
         chartData.push_back(qMakePair(grName, dPer));
 
     }
-    qDebug() << chartData.size();
+
     window = new chart(this, chartData);
     window->show();
 
 }
 
 void MainWindow::openClicked(){
+
+    if(!isSaved){
+        checkSaveDia();
+    }
+
     initModel();
+
 }
 
 void MainWindow::saveClicked(){
@@ -132,9 +206,10 @@ void MainWindow::initModel(){
     }else{
         if(!hasData)
             exit(0);
+        else {
+            return;
+        }
     }
-
-
 
     QJsonArray docAr = QJsonValue(doc.object().value("groups")).toArray();
 
@@ -147,6 +222,9 @@ void MainWindow::initModel(){
     TreeModel *model = new TreeModel(headers, doc);
 
     model1 = model;
+    //model1->dataChanged()
+   // model1->dataChanged(ui->treeView->selectionModel()->currentIndex(), ui->treeView->selectionModel()->currentIndex());
+
    // file.close();
     int id = QFontDatabase::addApplicationFont(":/fonts/SourceSansPro-SemiBold.ttf");
     QString family = QFontDatabase::applicationFontFamilies(id).at(0);
@@ -155,13 +233,17 @@ void MainWindow::initModel(){
     ui->treeView->setFont(monospace);
     ui->treeView->setModel(model);
     //QFont font(":/MODERNE_SANS.ttf");
+    connect(ui->treeView->selectionModel(),SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
+             this, SLOT(updateActions(const QItemSelection&,const QItemSelection&)));
 
     for (int column = 0; column < model->columnCount(); ++column)
         ui->treeView->resizeColumnToContents(column);
+
     curPath->setText(file1.fileName());
 
     flagGetFile = 0;
     updateActions();
+    newUpdate = 1;
     hasData = 1;
     isSaved = false;
 }
@@ -189,6 +271,10 @@ void MainWindow::insertChild() {
     for (int column = 0; column < model->columnCount(index); ++column) {
 
         QModelIndex child = model->index(0, column, index);
+
+        if(model1->getType(index) == "root"){
+            model1->setType(child, "group");
+        }
         if(model1->getType(index) == "group"){
             model1->setType(child, "employee");
         }
@@ -204,7 +290,7 @@ void MainWindow::insertChild() {
             else
                 model->setData(child, QVariant(""), Qt::EditRole);
         }else
-            model->setData(child, QVariant(model1->getType(child)), Qt::EditRole);
+            model->setData(child, QVariant(QString(model1->getType(child) + QString::number(parIt->childCount()))), Qt::EditRole);
 
         if (!model->headerData(column, Qt::Horizontal).isValid())
             model->setHeaderData(column, Qt::Horizontal, QVariant("Столбец"), Qt::EditRole);
@@ -213,6 +299,7 @@ void MainWindow::insertChild() {
      ui->treeView->selectionModel()->setCurrentIndex(model->index(0, 0, index),
         QItemSelectionModel::ClearAndSelect);
      //Меняем состояние кнопок:
+     isSaved = false;
      updateActions();
 }
 
@@ -229,9 +316,9 @@ bool MainWindow::insertColumn() {
 void MainWindow::insertRow() {
     QModelIndex index = ui->treeView->selectionModel()->currentIndex();
     QAbstractItemModel *model = ui->treeView->model();
-
+    TreeItem* parIt = model1->getItem(index.parent());
     if (!model->insertRow(index.row()+1, index.parent())) return;
-            updateActions();
+            // updateActions();
 
     for (int column = 0; column < model->columnCount(index.parent()); ++column) {
         QModelIndex child = model->index(index.row()+1, column, index.parent());
@@ -243,9 +330,10 @@ void MainWindow::insertRow() {
                 model->setData(child, QVariant(""), Qt::EditRole);
         }
         else
-            model->setData(child, QVariant(model1->getType(index)), Qt::EditRole);
+            model->setData(child, QVariant(QString(model1->getType(child) + QString::number(parIt->childCount()))), Qt::EditRole);
 
     }
+    isSaved = false;
 }
 
 bool MainWindow::removeColumn() {
@@ -260,6 +348,7 @@ void MainWindow::removeRow() {
  QModelIndex index = ui->treeView->selectionModel()->currentIndex();
  QAbstractItemModel *model = ui->treeView->model();
  if (model->removeRow(index.row(), index.parent())) updateActions();
+ isSaved = false;
 }
 
 void MainWindow::updateActions(const QItemSelection &selected,const QItemSelection &deselected) {
@@ -280,7 +369,9 @@ void MainWindow::updateActions() {
     ui->insertRowAction->setEnabled(hasCurrent);
    //ui->insertColumnAction->setEnabled(hasCurrent);
          //Покажем информацию в заголовке окна:
-    if (hasCurrent) {
+    if (hasCurrent && (newUpdate == 0)) {
+        //TreeItem* item = model1->getItem(ui->treeView->selectionModel()->currentIndex());
+        //qDebug() << item->data(0);
         ui->treeView->closePersistentEditor(ui->treeView->selectionModel()->currentIndex());
 
         int row = ui->treeView->selectionModel()->currentIndex().row();
@@ -315,41 +406,54 @@ void MainWindow::updateActions() {
             ui->removeRowAction->setText(QString("Удалить работника\n %1").arg(curItem->data(0).toString()));
 
         }
-
+     //  qDebug() << rand() % 100;
     }else{
-        if(model1->checkNotEmpty()){
+
+        if(model1->getRoot()->childCount()){
             TreeItem* root = model1->getRoot();
             TreeItem* first = root->child(0);
             QModelIndex ind = model1->getIn(0, 0, first);
-
+            //TreeItem* item = model1->getItem(ui->treeView->selectionModel()->currentIndex());
+           //qDebug() << item->data(0);
             ui->treeView->selectionModel()->setCurrentIndex(ind, QItemSelectionModel::Select);
             ui->treeView->closePersistentEditor(ui->treeView->selectionModel()->currentIndex());
+            connect(model1, SIGNAL(dataChanged(QModelIndex, QModelIndex)),
+                           this, SLOT(updateActions2()));
         }else{
             setNewGroup();
+            //TreeItem* item = model1->getItem(ui->treeView->selectionModel()->currentIndex());
+            //qDebug() << item->data(0);
             TreeItem* root = model1->getRoot();
             TreeItem* first = root->child(0);
             QModelIndex ind = model1->getIn(0, 0, first);
 
             ui->treeView->selectionModel()->setCurrentIndex(ind, QItemSelectionModel::Select);
             ui->treeView->closePersistentEditor(ui->treeView->selectionModel()->currentIndex());
+
         }
     }
+    if(newUpdate == 1){
+        newUpdate = 0;
+        connect(model1, SIGNAL(dataChanged(QModelIndex, QModelIndex)),
+              this, SLOT(updateActions2()));
+    }
+
 }
 
+void MainWindow::updateActions2(){
+    isSaved = false;
+    updateActions();
+}
 void MainWindow::setNewGroup(){
-    //Получаем модельный индекс и модель элемента:
-    TreeItem* root = model1->getRoot();
+
+   TreeItem* root = model1->getRoot();
    QModelIndex index = model1->getIn(0, 0, root);
    QAbstractItemModel *model = ui->treeView->model();
 
-   if(model1->getType(index) == "task")
-       return;
-    //Вставляем данные:
-   //QModelIndex parInd = model1->parent(index);
    TreeItem * parIt = static_cast<TreeItem*>(index.internalPointer());
 
 
-   index = model1->getIn(index.row(), 0, parIt);
+   index = model1->getIn(0, 0, parIt);
 
    //index = it;
    if (model->columnCount(index) == 0) {
@@ -374,10 +478,10 @@ void MainWindow::setNewGroup(){
            model->setHeaderData(column, Qt::Horizontal, QVariant("Столбец"), Qt::EditRole);
      }
     //Выбираем вставленный узел:
+   qDebug() << root->childCount();
     ui->treeView->selectionModel()->setCurrentIndex(model->index(0, 0, index),
        QItemSelectionModel::ClearAndSelect);
     //Меняем состояние кнопок:
-    updateActions();
 }
 
 void MainWindow::on_install_clicked()
