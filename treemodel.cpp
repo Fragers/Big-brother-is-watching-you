@@ -63,7 +63,7 @@ QVariant TreeModel::data (const QModelIndex &index, int role) const {
         if(item->type == "task" && item->data(2) == "in progress"){
             QString cell = item->data(3).toString();
             if(cell == "Данные" || QDate::fromString(item->data(3).toString(), "dd.MM.yyyy") >= cd)
-                return  QColor(250, 231, 181, 255);
+                return  QColor(250, 231, 181, 240);
             else
                 return  QColor(229, 43, 80, 100);
 

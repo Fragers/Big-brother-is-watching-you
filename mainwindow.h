@@ -64,11 +64,11 @@ private slots: //слоты для действий, выполняемых по
     void showChart();
     void openClicked();
     void saveClicked();
-    void on_install_clicked();
+    void loadTriggered();
 
-    void on_ConnectTo_clicked();
+    void uploadTriggered();
 
-    void on_pushButton_clicked();
+    void connectTriggered();
 
     void exitApp();
 
@@ -79,6 +79,11 @@ public slots: //для реализации сигнала selectionChanged у Q
     void updateActions2();
     void sockReady();
     void sockDisc();
+//    void on_install_clicked();
+
+//    void on_ConnectTo_clicked();
+
+//    void on_pushButton_clicked();
 };
 
 #endif // MAINWINDOW_H

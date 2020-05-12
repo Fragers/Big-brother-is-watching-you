@@ -21,6 +21,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         connect(socket, SIGNAL(readyRead()), this, SLOT(sockReady()));
         connect(socket, SIGNAL(disconnected()), this, SLOT(sockDisc()));
 
+        connect(ui->actionLoad_file, SIGNAL(triggered()), this, SLOT(loadTriggered()));
+        connect(ui->actionUpload_file, SIGNAL(triggered()), this, SLOT(loadTriggered()));
+        connect(ui->actionConnect, SIGNAL(triggered()), this, SLOT(connectTriggered()));
+
     /*Server*/
 
     curPath = new QLabel;
@@ -487,13 +491,14 @@ void MainWindow::setNewGroup(){
            model->setHeaderData(column, Qt::Horizontal, QVariant("Столбец"), Qt::EditRole);
      }
     //Выбираем вставленный узел:
-   qDebug() << root->childCount();
+  // qDebug() << root->childCount();
     ui->treeView->selectionModel()->setCurrentIndex(model->index(0, 0, index),
        QItemSelectionModel::ClearAndSelect);
     //Меняем состояние кнопок:
 }
 
-void MainWindow::on_install_clicked()
+
+void MainWindow::loadTriggered()
 {
     if(socket->isOpen()){
         socket->write("Read");
@@ -505,9 +510,9 @@ void MainWindow::on_install_clicked()
 
 }
 
-//Сервер
 
-void MainWindow::on_ConnectTo_clicked()
+
+void MainWindow::connectTriggered()
 {
 
     socket->connectToHost("127.0.0.1", 5555);
@@ -542,7 +547,7 @@ void MainWindow::sockReady(){
     }
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::uploadTriggered()
 {
     if(socket->isOpen()){
         socket->write("Write");
@@ -553,4 +558,68 @@ void MainWindow::on_pushButton_clicked()
     }
 
 }
+
+//Сервер
+
+//void MainWindow::on_install_clicked()
+//{
+//    if(socket->isOpen()){
+//        socket->write("Read");
+//        socket->waitForBytesWritten(2000);
+//    }else{
+//        QMessageBox::information(this, "Иноформация", "Соединение не установлено");
+//    }
+
+
+//}
+
+
+
+//void MainWindow::on_ConnectTo_clicked()
+//{
+
+//    socket->connectToHost("127.0.0.1", 5555);
+//}
+
+//void MainWindow::sockDisc(){
+//    socket->deleteLater();
+//}
+
+//void MainWindow::sockReady(){
+//    if(socket->waitForConnected(500)){
+//        socket->waitForReadyRead(500);
+//        Data = socket->readAll();
+//        testDoc = QJsonDocument::fromJson(Data, &testDocError);
+//        if(testDocError.errorString().toInt() == QJsonParseError::NoError){
+//            if(testDoc.object().value("type").toString() == "connect" && testDoc.object().value("status").toString() == "yes"){
+//                QMessageBox::information(this, "информация", "соединение установлено");
+
+//            }else{
+//                flagGetFile = 1;
+//                qDebug() << Data;
+//                if(file1.open(QIODevice::WriteOnly|QIODevice::Text)){
+//                    file1.write(testDoc.toJson());
+//                }
+//                file1.close();
+//                initModel();
+
+//            }
+//        }else
+//            QMessageBox::information(this, "информация", "соединение не установлено");
+//        qDebug() << Data;
+//    }
+//}
+
+//void MainWindow::on_pushButton_clicked()
+//{
+//    if(socket->isOpen()){
+//        socket->write("Write");
+//        socket->waitForBytesWritten(1000);
+//        socket->write(docToPush);
+//    }else{
+//        QMessageBox::information(this, "Иноформация", "Соединение не установлено");
+//    }
+
+//}
+
 //todo кидаем запрос на чтение в формате

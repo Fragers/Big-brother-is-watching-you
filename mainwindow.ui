@@ -18,8 +18,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>892</width>
-    <height>634</height>
+    <width>900</width>
+    <height>635</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -35,8 +35,16 @@
    <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <property name="styleSheet">
-    <string notr="true">	background: #202020; </string>
+    <string notr="true">	background: #202020; 
+	color: white;
+</string>
    </property>
    <widget class="QWidget" name="verticalLayoutWidget_2">
     <property name="geometry">
@@ -181,20 +189,28 @@ background-color: #404040</string>
           <bool>false</bool>
          </property>
          <property name="styleSheet">
-          <string notr="true">QHeaderView::section {
+          <string notr="true">QTreeView {
+    show-decoration-selected: 1;
+}
+
+
+
+QHeaderView::section {
     background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                                       stop:0 #616161, stop: 0.5 #505050,
                                       stop: 0.6 #434343, stop:1 #656565);
     color: white;
     padding-left: 4px;
     border: 1px solid #6c6c6c;
+	
 }
+
 QTreeView{
 	background: 	#F5F5F5;
 	alternate-background-color: 	#ededed;
 	color:	#4f4f4f ;
 	font: 10pt;
-	
+	 border: 1px solid #567dbc;
 }
 
 QTreeView::branch:has-siblings:!adjoins-item {
@@ -219,7 +235,28 @@ QTreeView::branch:open:has-children:!has-siblings,
 QTreeView::branch:open:has-children:has-siblings  {
         border-image: none;
         image: url(:/branch-open.png);
-}</string>
+}
+
+
+QTreeView::item:hover {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #e7effd, stop: 1 #cbdaf1);
+    border: 1px solid #bfcde4;
+}
+
+QTreeView::item:selected {
+    border: 1px solid #567dbc;
+}
+
+QTreeView::item:selected:active{
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #6ea1f1, stop: 1 #567dbc);
+}
+
+QTreeView::item:selected:!active {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #6b9be8, stop: 1 #577fbf);
+}
+
+
+</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
@@ -232,79 +269,6 @@ QTreeView::branch:open:has-children:has-siblings  {
          </property>
          <property name="animated">
           <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QPushButton" name="install">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">color: #ededed;
-background-color: #404040</string>
-         </property>
-         <property name="text">
-          <string>Загрузить файл</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">color: #ededed;
-background-color: #404040</string>
-         </property>
-         <property name="text">
-          <string>Отправить файл</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="ConnectTo">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">color: #ededed;
-background-color: #404040</string>
-         </property>
-         <property name="text">
-          <string>Connect</string>
          </property>
         </widget>
        </item>
@@ -365,7 +329,9 @@ QMenu::item:selected { /* when user selects item using mouse or keyboard */
     </property>
     <addaction name="actionNew_file"/>
     <addaction name="action_Open"/>
+    <addaction name="separator"/>
     <addaction name="action_Save"/>
+    <addaction name="separator"/>
     <addaction name="action_Exit"/>
    </widget>
    <widget class="QMenu" name="menuOther">
@@ -391,8 +357,34 @@ QMenu::item:selected { /* when user selects item using mouse or keyboard */
     </property>
     <addaction name="actionShow_chart"/>
    </widget>
+   <widget class="QMenu" name="menuServer">
+    <property name="styleSheet">
+     <string notr="true">QMenu {
+    color: #ededed;
+	background: #353535;  /* sets background of the menu */
+    border: 1px solid black;
+}
+
+QMenu::item {
+    /* sets background of menu item. set this to something non-transparent
+        if you want menu color and menu item color to be different */
+    background-color: transparent;
+}
+
+QMenu::item:selected { /* when user selects item using mouse or keyboard */
+    background-color: #2F4F4F;
+}</string>
+    </property>
+    <property name="title">
+     <string>Server</string>
+    </property>
+    <addaction name="actionLoad_file"/>
+    <addaction name="actionUpload_file"/>
+    <addaction name="actionConnect"/>
+   </widget>
    <addaction name="menu_flie"/>
    <addaction name="menuOther"/>
+   <addaction name="menuServer"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="styleSheet">
@@ -428,6 +420,21 @@ background-color: #404040</string>
   <action name="action_Exit">
    <property name="text">
     <string>&amp;Exit</string>
+   </property>
+  </action>
+  <action name="actionLoad_file">
+   <property name="text">
+    <string>Load file</string>
+   </property>
+  </action>
+  <action name="actionUpload_file">
+   <property name="text">
+    <string>Upload file</string>
+   </property>
+  </action>
+  <action name="actionConnect">
+   <property name="text">
+    <string>Connect</string>
    </property>
   </action>
  </widget>
