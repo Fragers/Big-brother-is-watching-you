@@ -285,12 +285,17 @@ void MainWindow::insertChild() {
         QString type = model1->getType(index);
 
         if(column > 0 ) {
-            if(type == "employee")
-                model->setData(child, QVariant("Данные"), Qt::EditRole);
+            if(type == "employee"){
+                if(column == 2)
+                    model->setData(child, QVariant("in progress"), Qt::EditRole);
+                else
+                    model->setData(child, QVariant("Данные"), Qt::EditRole);
+            }
             else
                 model->setData(child, QVariant(""), Qt::EditRole);
         }else
-            model->setData(child, QVariant(QString(model1->getType(child) + QString::number(parIt->childCount()))), Qt::EditRole);
+            model->setData(child, QVariant(QString(model1->getType(child) +
+                                                   QString::number(parIt->childCount()))), Qt::EditRole);
 
         if (!model->headerData(column, Qt::Horizontal).isValid())
             model->setHeaderData(column, Qt::Horizontal, QVariant("Столбец"), Qt::EditRole);
@@ -324,8 +329,12 @@ void MainWindow::insertRow() {
         QModelIndex child = model->index(index.row()+1, column, index.parent());
         model1->setType(child, model1->getType(index));
         if(column > 0){
-            if(model1->getType(index) == "task")
-                model->setData(child, QVariant("Данные"), Qt::EditRole);
+            if(model1->getType(index) == "task"){
+                if(column == 2)
+                    model->setData(child, QVariant("in progress"), Qt::EditRole);
+                else
+                    model->setData(child, QVariant("Данные"), Qt::EditRole);
+            }
             else
                 model->setData(child, QVariant(""), Qt::EditRole);
         }

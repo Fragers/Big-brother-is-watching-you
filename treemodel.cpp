@@ -1,6 +1,7 @@
 #include "treeitem.h"
 #include "treemodel.h"
 #include<cmath>
+#include<QDateTime>
 TreeModel::TreeModel(const QStringList &headers, QJsonDocument &data, QObject *parent)
     : QAbstractItemModel(parent) {
     Q_UNUSED(headers)
@@ -49,14 +50,26 @@ void TreeModel::setType(QModelIndex &index, QString type){
 
 QVariant TreeModel::data (const QModelIndex &index, int role) const {
    // if (!index.isValid()) return QVariant();
+    QDate cd = QDate::currentDate();
 
+    QString dt = cd.toString("dd-MM-yyyy");
     TreeItem *item = getItem(index);
 
     if(role == Qt::BackgroundColorRole){
         if(item->type == "task" && item->data(2) == "yes")
             return QColor("#befebe");
-        if(item->type == "task" && item->data(2) == "no")
-            return  QColor(229, 43, 80, 100);
+//        if(item->type == "task" && item->data(2) == "no")
+//            return  QColor(229, 43, 80, 100);
+        if(item->type == "task" && item->data(2) == "in progress"){
+            QString cell = item->data(3).toString();
+            if(cell == "Данные" || QDate::fromString(item->data(3).toString(), "dd.MM.yyyy") >= cd)
+                return  QColor(250, 231, 181, 255);
+            else
+                return  QColor(229, 43, 80, 100);
+
+        }
+
+
     }
     if(item->type == "employee"){
         int chCount = item->childCount();

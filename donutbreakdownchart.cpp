@@ -45,7 +45,8 @@ DonutBreakdownChart::DonutBreakdownChart(QGraphicsItem *parent, Qt::WindowFlags 
 //![1]
 
 //![2]
-void DonutBreakdownChart::addBreakdownSeries(QPieSeries *breakdownSeries, QColor color)
+void DonutBreakdownChart::addBreakdownSeries(QPieSeries *breakdownSeries,
+                                             QColor color)
 {
     QFont font("Arial", 12);
 
@@ -72,7 +73,8 @@ void DonutBreakdownChart::addBreakdownSeries(QPieSeries *breakdownSeries, QColor
         color = color.lighter(115);
         slice->setBrush(color);
         slice->setLabelFont(font);
-        slice->setLabel(QString("%1 %2%").arg(slice->label()).arg(slice->percentage() * 100, 0, 'f', 2));
+        slice->setLabel(QString("%1 %2%").arg(slice->label())
+                        .arg(slice->percentage() * 100, 0, 'f', 2));
     }
 
     // add the series to the chart
