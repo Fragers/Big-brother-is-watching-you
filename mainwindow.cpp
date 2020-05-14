@@ -44,8 +44,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     initModel();
 
 
-//    connect(ui->treeView->selectionModel(),SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
-//             this, SLOT(updateActions(const QItemSelection&,const QItemSelection&)));
 
     connect(ui->insertRowAction,SIGNAL(clicked()),this,SLOT(insertRow()));
 
@@ -161,8 +159,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::showChart(){
 
-
-//    chartData = model1->getChartData();
     chartData.clear();
     TreeItem* root = model1->getRoot();
     int chCount = root->childCount();
@@ -203,7 +199,6 @@ void MainWindow::initModel(){
         file1.setFileName(QFileDialog::getOpenFileName(nullptr, "", "./..", "*.json"));
 
     if(file1.open(QIODevice::ReadOnly|QFile::Text)){
-        //qDebug() << 1;
         docToPush = file1.readAll();
         doc = QJsonDocument::fromJson(QByteArray(docToPush), &docError);
         file1.close();
@@ -226,10 +221,7 @@ void MainWindow::initModel(){
     TreeModel *model = new TreeModel(headers, doc);
 
     model1 = model;
-    //model1->dataChanged()
-   // model1->dataChanged(ui->treeView->selectionModel()->currentIndex(), ui->treeView->selectionModel()->currentIndex());
 
-   // file.close();
     int id = QFontDatabase::addApplicationFont(":/fonts/SourceSansPro-SemiBold.ttf");
     QString family = QFontDatabase::applicationFontFamilies(id).at(0);
     QFont monospace(family);
@@ -380,11 +372,8 @@ void MainWindow::updateActions() {
 
     bool hasCurrent = ui->treeView->selectionModel()->currentIndex().isValid();
     ui->insertRowAction->setEnabled(hasCurrent);
-   //ui->insertColumnAction->setEnabled(hasCurrent);
          //Покажем информацию в заголовке окна:
     if (hasCurrent && (newUpdate == 0)) {
-        //TreeItem* item = model1->getItem(ui->treeView->selectionModel()->currentIndex());
-        //qDebug() << item->data(0);
         ui->treeView->closePersistentEditor(ui->treeView->selectionModel()->currentIndex());
 
         int row = ui->treeView->selectionModel()->currentIndex().row();
@@ -419,23 +408,20 @@ void MainWindow::updateActions() {
             ui->removeRowAction->setText(QString("Удалить работника\n %1").arg(curItem->data(0).toString()));
 
         }
-     //  qDebug() << rand() % 100;
     }else{
 
         if(model1->getRoot()->childCount()){
             TreeItem* root = model1->getRoot();
             TreeItem* first = root->child(0);
             QModelIndex ind = model1->getIn(0, 0, first);
-            //TreeItem* item = model1->getItem(ui->treeView->selectionModel()->currentIndex());
-           //qDebug() << item->data(0);
+
             ui->treeView->selectionModel()->setCurrentIndex(ind, QItemSelectionModel::Select);
             ui->treeView->closePersistentEditor(ui->treeView->selectionModel()->currentIndex());
             connect(model1, SIGNAL(dataChanged(QModelIndex, QModelIndex)),
                            this, SLOT(updateActions2()));
         }else{
             setNewGroup();
-            //TreeItem* item = model1->getItem(ui->treeView->selectionModel()->currentIndex());
-            //qDebug() << item->data(0);
+
             TreeItem* root = model1->getRoot();
             TreeItem* first = root->child(0);
             QModelIndex ind = model1->getIn(0, 0, first);
@@ -491,10 +477,8 @@ void MainWindow::setNewGroup(){
            model->setHeaderData(column, Qt::Horizontal, QVariant("Столбец"), Qt::EditRole);
      }
     //Выбираем вставленный узел:
-  // qDebug() << root->childCount();
     ui->treeView->selectionModel()->setCurrentIndex(model->index(0, 0, index),
        QItemSelectionModel::ClearAndSelect);
-    //Меняем состояние кнопок:
 }
 
 

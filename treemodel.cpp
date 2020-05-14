@@ -2,6 +2,7 @@
 #include "treemodel.h"
 #include<cmath>
 #include<QDateTime>
+#define SFML_NO_DEPRECATED_WARNINGS
 TreeModel::TreeModel(const QStringList &headers, QJsonDocument &data, QObject *parent)
     : QAbstractItemModel(parent) {
     Q_UNUSED(headers)
@@ -124,7 +125,7 @@ QVariant TreeModel::data (const QModelIndex &index, int role) const {
 //            return  QColor(229, 43, 80, 100);
 //    }
     tex1:
-    if (role != Qt::DisplayRole  && role != Qt::EditRole) return QVariant();
+    if (role != Qt::DisplayRole  && role != Qt::EditRole /*&& role != Qt::BackgroundRole*/) return QVariant();
 
 
     return item->data(index.column());

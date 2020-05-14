@@ -1,11 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>default.txt</file>
-        <file>branch-open.png</file>
-        <file>branch-closed.png</file>
-        <file>branch-end.png</file>
-        <file>branch-more.png</file>
-        <file>vline.png</file>
         <file>fonts/Akrobat-Bold.ttf</file>
         <file>fonts/Akrobat-Regular.ttf</file>
         <file>fonts/MODERNE_SANS.ttf</file>
@@ -18,5 +13,10 @@
         <file>fonts/SourceSansPro-Black.ttf</file>
         <file>fonts/SourceSansPro-Bold.ttf</file>
         <file>fonts/SourceSansPro-SemiBold.ttf</file>
+        <file>Branches/branch-closed.png</file>
+        <file>Branches/branch-end.png</file>
+        <file>Branches/branch-more.png</file>
+        <file>Branches/branch-open.png</file>
+        <file>Branches/vline.png</file>
     </qresource>
 </RCC>
