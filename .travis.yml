@@ -1,0 +1,30 @@
+language: cpp
+dist: bionic
+compiler: gcc
+
+before_install:
+  - pip install --user cpp-coveralls
+  - sudo apt-get install qt5-default -y
+
+addons:
+  sonarcloud:
+    organization: "fragers"
+  apt:
+    update: true
+
+script:
+  - qmake
+  - make
+  - ./tests/tests
+
+after_success:
+  - coveralls --root . -E ".*external.*" -E ".*tests.*"
+  - build-wrapper-linux-x86-64 --out-dir bw-output make clean all
+  - sonar-scanner -Dsonar.verbose=true -X
+
+cache:
+ directories:
+ - '$HOME/.sonar/cache'
+
+notifications:
+  email: false
