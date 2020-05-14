@@ -10,6 +10,7 @@
 #include <QtCharts/QChartView>
 #include "donutbreakdownchart.h"
 #include"savedia.h"
+#include"initstart.h"
 #include<QLayout>
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
 
@@ -41,7 +42,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->actionNew_file, SIGNAL(triggered()), this, SLOT(newFile()));
 
     Q_INIT_RESOURCE(simpletreemodel);
-    initModel();
+    initStartFunc();
 
 
 
@@ -72,9 +73,31 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 
      //и обновить состояние кнопок:
-    updateActions();
+    //updateActions();
 }
 
+void MainWindow::initStartFunc(){
+
+    initStart *dia = new initStart(this);
+
+    dia->exec();
+
+    if(dia->state == "new"){
+         isSaved = true;
+        newFile();
+        return;
+    }
+
+    if(dia->state == "close"){
+        exit(0);
+    }
+    if(dia->state == "open"){
+        initModel();
+
+    }
+
+
+}
 void MainWindow::checkSaveDia(){
 
     QDialog* dia = new QDialog(this);
@@ -117,6 +140,11 @@ void MainWindow::newFile(){
         file1.close();
         flagGetFile = 1;
         initModel();
+     }else{
+        if(!hasData)
+            exit(0);
+        else
+            return;
      }
 
 

@@ -82,6 +82,8 @@ class TreeModel : public QAbstractItemModel {
     bool checkEdit(const QModelIndex &index) const;
 
     bool checkNotEmpty();
+
+
 private:
 
   //внутренний метод для установки данных модели

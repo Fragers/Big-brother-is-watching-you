@@ -47,7 +47,10 @@ public:
     int flagGetFile = 0;
 
     QVector<QPair<QString, double>> chartData;
-   void setNewGroup();
+    void setNewGroup();
+
+    void initStartFunc();
+
 private:
     Ui::MainWindow *ui;
     chart *window;

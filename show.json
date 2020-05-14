@@ -1,0 +1,94 @@
+{
+	"groups":[
+    {
+        "employee": [
+            {
+                "name": "employee2",
+                "persents": "33.3%",
+                "tasks": [
+                    {
+                        "deadline": "13.05.2020",
+                        "readiness": "yes",
+                        "report": "Данные",
+                        "task_name": "task3"
+                    },
+                    {
+                        "deadline": "13.05.2020",
+                        "readiness": "in progress",
+                        "report": "Данные",
+                        "task_name": "task2"
+                    },
+                    {
+                        "deadline": "30.05.2022",
+                        "readiness": "in progress",
+                        "report": "Данные",
+                        "task_name": "task1"
+                    }
+                ]
+            },
+            {
+                "name": "employee1",
+                "persents": "0%",
+                "tasks": [
+                    {
+                        "deadline": "Данные",
+                        "readiness": "in progress",
+                        "report": "Данные",
+                        "task_name": "task1"
+                    }
+                ]
+            }
+        ],
+        "group_name": "group",
+        "group_persent": "0%"
+    },
+    {
+        "employee": [
+            {
+                "name": "employee2",
+                "persents": "100%",
+                "tasks": [
+                    {
+                        "deadline": "Данные",
+                        "readiness": "yes",
+                        "report": "Данные",
+                        "task_name": "task1"
+                    }
+                ]
+            },
+            {
+                "name": "employee1",
+                "persents": "0%",
+                "tasks": [
+                    {
+                        "deadline": "13.04.2020",
+                        "readiness": "in progress",
+                        "report": "Данные",
+                        "task_name": "task1"
+                    }
+                ]
+            }
+        ],
+        "group_name": "group2",
+        "group_persent": "50%"
+    },
+    {
+        "employee": [
+            {
+                "name": "employee1",
+                "persents": "100%",
+                "tasks": [
+                    {
+                        "deadline": "Данные",
+                        "readiness": "yes",
+                        "report": "Данные",
+                        "task_name": "task1"
+                    }
+                ]
+            }
+        ],
+        "group_name": "group3",
+        "group_persent": "100%"
+    }
+]
+}

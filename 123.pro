@@ -4,12 +4,14 @@ QT += network charts
 HEADERS += \
     createnewfile.h \
     donutbreakdownchart.h \
+    initstart.h \
     mainslice.h \
     savedia.h
 
 SOURCES += \
     createnewfile.cpp \
     donutbreakdownchart.cpp \
+    initstart.cpp \
     mainslice.cpp \
     savedia.cpp
 
@@ -47,6 +49,7 @@ HEADERS += \
 FORMS += \
     chart.ui \
     createnewfile.ui \
+    initstart.ui \
     mainwindow.ui \
     savedia.ui \
     widget.ui
