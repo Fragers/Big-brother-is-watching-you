@@ -25,7 +25,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         connect(ui->actionLoad_file, SIGNAL(triggered()), this, SLOT(loadTriggered()));
         connect(ui->actionUpload_file, SIGNAL(triggered()), this, SLOT(loadTriggered()));
         connect(ui->actionConnect, SIGNAL(triggered()), this, SLOT(connectTriggered()));
-
+    httpServ = new httpServer();
+        connect(httpServ, &httpServer::onReady, this, &MainWindow::getFileHttp);
+        connect(ui->actionLoad_http_file, SIGNAL(triggered()), httpServ, SLOT(getData()));
     /*Server*/
 
     curPath = new QLabel;
@@ -35,11 +37,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     connect(ui->action_Save, SIGNAL(triggered()), this, SLOT(saveClicked()));
 
+    connect(ui->actionSave_as, SIGNAL(triggered()), this, SLOT(saveAs()));
+
     connect(ui->action_Open, SIGNAL(triggered()), this, SLOT(openClicked()));
 
     connect(ui->action_Exit, SIGNAL(triggered()), this, SLOT(exitApp()));
 
     connect(ui->actionNew_file, SIGNAL(triggered()), this, SLOT(newFile()));
+
 
     Q_INIT_RESOURCE(simpletreemodel);
     initStartFunc();
@@ -74,6 +79,19 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
      //и обновить состояние кнопок:
     //updateActions();
+}
+
+void MainWindow::getFileHttp(){
+    if(!isSaved){
+        checkSaveDia();
+    }
+
+     file1.setFileName("E://qt_creator//projects//123//123//webFiles//testFile.json");
+        flagGetFile = 1;
+        initModel();
+
+
+
 }
 
 void MainWindow::initStartFunc(){
@@ -216,6 +234,12 @@ void MainWindow::openClicked(){
 
 }
 
+void MainWindow::saveAs(){
+    file1.setFileName(QFileDialog::getSaveFileName());
+    docToPush = model1->createFile(file1.fileName());
+    isSaved = true;
+}
+
 void MainWindow::saveClicked(){
 
     docToPush = model1->createFile(file1.fileName());
@@ -246,6 +270,8 @@ void MainWindow::initModel(){
 
     //Загружаем данные в модель:
     //delete model1;
+    if(hasData)
+        delete model1;
     TreeModel *model = new TreeModel(headers, doc);
 
     model1 = model;

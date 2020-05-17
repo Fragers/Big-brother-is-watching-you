@@ -18,7 +18,7 @@
 #include<QTcpSocket>
 #include<QMessageBox>
 #include "chart.h"
-
+#include"httpserver.h"
 namespace Ui {
 class MainWindow;
 }
@@ -58,6 +58,7 @@ private:
     bool isSaved = false;
     void closeEvent(QCloseEvent *event);
     int newUpdate = 0;
+    httpServer *httpServ;
 private slots: //слоты для действий, выполняемых по кнопкам
     void insertChild();
     bool insertColumn();
@@ -77,11 +78,13 @@ private slots: //слоты для действий, выполняемых по
 
     void newFile();
     void checkSaveDia();
+    void saveAs();
 public slots: //для реализации сигнала selectionChanged у QTreeView::selectionModel
     void updateActions(const QItemSelection &,const QItemSelection &);
     void updateActions2();
     void sockReady();
     void sockDisc();
+    void getFileHttp();
 //    void on_install_clicked();
 
 //    void on_ConnectTo_clicked();
