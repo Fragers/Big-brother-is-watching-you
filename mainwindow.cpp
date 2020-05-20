@@ -363,7 +363,7 @@ bool MainWindow::insertColumn() {
  int column = ui->treeView->selectionModel()->currentIndex().column();
  bool changed = model->insertColumn(column + 1);
  if (changed)
-  model->setHeaderData(column + 1, Qt::Horizontal, QVariant("Столбец"), Qt::EditRole);
+    model->setHeaderData(column + 1, Qt::Horizontal, QVariant("Столбец"), Qt::EditRole);
  updateActions();
  return changed;
 }
@@ -525,7 +525,7 @@ void MainWindow::setNewGroup(){
        if(column > 0 ) {
                model->setData(child, QVariant(""), Qt::EditRole);
        }else
-           model->setData(child, QVariant(model1->getType(child)), Qt::EditRole);
+           model->setData(child, QVariant((model1->getType(child) + "1")), Qt::EditRole);
 
        if (!model->headerData(column, Qt::Horizontal).isValid())
            model->setHeaderData(column, Qt::Horizontal, QVariant("Столбец"), Qt::EditRole);

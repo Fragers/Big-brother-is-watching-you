@@ -115,15 +115,7 @@ QVariant TreeModel::data (const QModelIndex &index, int role) const {
             return QColor("#99ff99");
 
     }
-//    if(role == Qt::BackgroundColorRole){
-//        if(item->type == "task" && item->data(2) == "yes"){
-//            //const QModelIndex gr = parent(parent(index));
 
-//            return QColor("#7FFFD4");
-//        }
-//        if(item->type == "task" && item->data(2) == "no")
-//            return  QColor(229, 43, 80, 100);
-//    }
     tex1:
     if (role != Qt::DisplayRole  && role != Qt::EditRole /*&& role != Qt::BackgroundRole*/) return QVariant();
 
@@ -240,7 +232,6 @@ void TreeModel::setupModelData(const QJsonDocument &lines, TreeItem *parent) {
             emp << cur_employee.at(j).toObject().value("name").toString() << "" << persents;
 
             parents.last()->appendChild(new TreeItem(emp, parents.last()));
-         //   qDebug() << cur_employee.at(j).toObject().value("name").toString();
 
 
             QJsonArray task = cur_employee.at(j).toObject().value("tasks").toArray();

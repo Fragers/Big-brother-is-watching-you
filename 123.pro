@@ -36,26 +36,26 @@ SOURCES += \
     chart.cpp \
     main.cpp \
     mainwindow.cpp \
-    myserver.cpp \
+    #myserver.cpp \
     treeitem.cpp \
-    treemodel.cpp \
-    widget.cpp
+    treemodel.cpp
+    #widget.cpp
 
 HEADERS += \
     chart.h \
     mainwindow.h \
-    myserver.h \
+    #myserver.h \
     treeitem.h \
-    treemodel.h \
-    widget.h
+    treemodel.h
+  #  widget.h
 
 FORMS += \
     chart.ui \
     createnewfile.ui \
     initstart.ui \
     mainwindow.ui \
-    savedia.ui \
-    widget.ui
+    savedia.ui
+    #widget.ui
 
 # Default rules for deployment.
 #qnx: target.path = /tmp/$${TARGET}/bin

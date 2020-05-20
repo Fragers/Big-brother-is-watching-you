@@ -71,14 +71,14 @@ class TreeModel : public QAbstractItemModel {
     QStandardItem* ageWorker;
     void setupModelData(const QJsonDocument &lines, TreeItem *parent);
 
-    QString getType(QModelIndex &index);
-    void setType(QModelIndex &index, QString type);
+    QString getType(QModelIndex &index); //возвращает тип иерархический тип элемента(корень, группа, работник, задача)
+    void setType(QModelIndex &index, QString type); //устанговить тип
 
     QVector<QPair<QString, double>> chartData;
     QVector<QPair<QString, double>> getChartData();
     QVector<int>tst;
     TreeItem *getItem(const QModelIndex &index) const;
-    TreeItem* getRoot();
+    TreeItem* getRoot();                //вовзращает указатель на корневой элемент
     bool checkEdit(const QModelIndex &index) const;
 
     bool checkNotEmpty();

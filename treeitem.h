@@ -42,7 +42,5 @@ public:
      QVector <QVariant> m_itemData; //Список данных текущего узла
 
      TreeItem *m_parentItem; //Ссылка на родительский узел
-
-
 };
 #endif // TREEITEM_H
