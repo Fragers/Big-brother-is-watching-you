@@ -292,10 +292,11 @@ void MainWindow::initModel(){
     curPath->setText(file1.fileName());
 
     flagGetFile = 0;
-    updateActions();
+
     newUpdate = 1;
     hasData = 1;
     isSaved = false;
+    updateActions();
 }
 
 void MainWindow::insertChild() {
@@ -406,13 +407,14 @@ bool MainWindow::removeColumn() {
 void MainWindow::removeRow() {
  QModelIndex index = ui->treeView->selectionModel()->currentIndex();
  QAbstractItemModel *model = ui->treeView->model();
+
+
  if (model->removeRow(index.row(), index.parent())) updateActions();
+
  isSaved = false;
 }
 
 void MainWindow::updateActions(const QItemSelection &selected,const QItemSelection &deselected) {
-    Q_UNUSED(selected)
-    Q_UNUSED(deselected)
     updateActions();
 }
 
@@ -465,30 +467,29 @@ void MainWindow::updateActions() {
     }else{
 
         if(model1->getRoot()->childCount()){
-            TreeItem* root = model1->getRoot();
-            TreeItem* first = root->child(0);
-            QModelIndex ind = model1->getIn(0, 0, first);
 
-            ui->treeView->selectionModel()->setCurrentIndex(ind, QItemSelectionModel::Select);
-            ui->treeView->closePersistentEditor(ui->treeView->selectionModel()->currentIndex());
-            connect(model1, SIGNAL(dataChanged(QModelIndex, QModelIndex)),
-                           this, SLOT(updateActions2()));
+            //ui->treeView->closePersistentEditor(ui->treeView->selectionModel()->currentIndex());
+
+            //ui->treeView->closePersistentEditor(ui->treeView->selectionModel()->currentIndex());
+
+//            connect(model1, SIGNAL(dataChanged(QModelIndex, QModelIndex)),
+//                           this, SLOT(updateActions2()));
         }else{
             setNewGroup();
-
-            TreeItem* root = model1->getRoot();
-            TreeItem* first = root->child(0);
-            QModelIndex ind = model1->getIn(0, 0, first);
-
-            ui->treeView->selectionModel()->setCurrentIndex(ind, QItemSelectionModel::Select);
-            ui->treeView->closePersistentEditor(ui->treeView->selectionModel()->currentIndex());
-
         }
     }
     if(newUpdate == 1){
+        TreeItem* root = model1->getRoot();
+        TreeItem* first = root->child(0);
+        QModelIndex ind = model1->getIn(0, 0, first);
+        QItemSelection selection;
+        selection.select(ind, ind);
         newUpdate = 0;
+        ui->treeView->selectionModel()->setCurrentIndex(ind, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+        ui->treeView->closePersistentEditor(ui->treeView->selectionModel()->currentIndex());
         connect(model1, SIGNAL(dataChanged(QModelIndex, QModelIndex)),
               this, SLOT(updateActions2()));
+        updateActions();
     }
 
 }

@@ -99,6 +99,7 @@ QVariant TreeModel::data (const QModelIndex &index, int role) const {
 
         int chCount = item->childCount();
         if(chCount == 0){
+            item->setData(2, "0%");
              goto tex1;
         }
         double yes = 0;
@@ -413,13 +414,14 @@ bool TreeModel::removeColumns(int position, int columns, const QModelIndex &pare
 
 
 bool TreeModel::removeRows(int position, int rows, const QModelIndex &parent) {
- TreeItem *parentItem = getItem(parent);
- bool success = true;
- beginRemoveRows(parent, position, position + rows - 1);
- success = parentItem->removeChildren(position, rows);
- endRemoveRows();
+    TreeItem *parentItem = getItem(parent);
+    bool success = true;
+    beginRemoveRows(parent, position, position + rows - 1);
+    success = parentItem->removeChildren(position, rows);
+    endRemoveRows();
 
- return success;
+    emit dataChanged(parent, parent);
+    return success;
 }
 
 
