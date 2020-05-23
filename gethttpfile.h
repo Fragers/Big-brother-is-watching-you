@@ -1,5 +1,5 @@
-#ifndef HTTPSERVER_H
-#define HTTPSERVER_H
+#ifndef GETHTTPFILE_H
+#define GETHTTPFILE_H
 
 #include <QObject>
 #include<QNetworkAccessManager>
@@ -11,13 +11,14 @@
 #include<QStringList>
 #include<QString>
 
-class httpServer : public QObject
+class getHttpFile : public QObject
 {
     Q_OBJECT
 public:
-    explicit httpServer(QObject *parent = nullptr);
+    explicit getHttpFile( QObject *parent = nullptr);
     QStringList list;
     QStringList newList;
+    QString curFile;
 
 signals:
     void onReady();
@@ -29,5 +30,4 @@ public slots:
 private:
     QNetworkAccessManager *manager;
 };
-
-#endif // HTTPSERVER_H
+#endif // GETHTTPFILE_H

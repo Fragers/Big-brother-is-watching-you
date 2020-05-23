@@ -1,0 +1,220 @@
+{
+	"groups":[
+    {
+        "employee": [
+            {
+                "name": "Sanya",
+                "persents": "100%",
+                "tasks": [
+                    {
+                        "deadline": "21.02",
+                        "readiness": "yes",
+                        "report": "выфвыфвыфвыфв",
+                        "task_name": "domashka"
+                    },
+                    {
+                        "deadline": "21.02",
+                        "readiness": "yes",
+                        "report": "asddd",
+                        "task_name": "snova domashka"
+                    },
+                    {
+                        "deadline": "22.02",
+                        "readiness": "yes",
+                        "report": "asddd",
+                        "task_name": "make smth_1"
+                    }
+                ]
+            },
+            {
+                "name": "Sara",
+                "persents": "100%",
+                "tasks": [
+                    {
+                        "deadline": "Данные",
+                        "readiness": "yes",
+                        "report": "Данные",
+                        "task_name": "Данные"
+                    },
+                    {
+                        "deadline": "Данные",
+                        "readiness": "yes",
+                        "report": "Данные",
+                        "task_name": "Данные"
+                    },
+                    {
+                        "deadline": "21.02",
+                        "readiness": "yes",
+                        "report": "asddd",
+                        "task_name": "make smth"
+                    }
+                ]
+            }
+        ],
+        "group_name": "first_group",
+        "group_persent": "100%"
+    },
+    {
+        "employee": [
+            {
+                "name": "employee",
+                "persents": "0%",
+                "tasks": [
+                ]
+            }
+        ],
+        "group_name": "group",
+        "group_persent": "0%"
+    },
+    {
+        "employee": [
+        ],
+        "group_name": "group12",
+        "group_persent": "0%"
+    },
+    {
+        "employee": [
+            {
+                "name": "employee",
+                "persents": "0%",
+                "tasks": [
+                ]
+            }
+        ],
+        "group_name": "group",
+        "group_persent": "0%"
+    },
+    {
+        "employee": [
+        ],
+        "group_name": "group11",
+        "group_persent": "0%"
+    },
+    {
+        "employee": [
+            {
+                "name": "Данные",
+                "persents": "66.7%",
+                "tasks": [
+                    {
+                        "deadline": "2020.05.11",
+                        "readiness": "in progress",
+                        "report": "Данные",
+                        "task_name": "task3"
+                    },
+                    {
+                        "deadline": "Данные",
+                        "readiness": "yes",
+                        "report": "Данные",
+                        "task_name": "task"
+                    },
+                    {
+                        "deadline": "Данные",
+                        "readiness": "yes",
+                        "report": "Данные",
+                        "task_name": "task"
+                    }
+                ]
+            }
+        ],
+        "group_name": "Roflan",
+        "group_persent": "0%"
+    },
+    {
+        "employee": [
+        ],
+        "group_name": "group10",
+        "group_persent": "0%"
+    },
+    {
+        "employee": [
+            {
+                "name": "Данные",
+                "persents": "100%",
+                "tasks": [
+                    {
+                        "deadline": "Данные",
+                        "readiness": "yes",
+                        "report": "Данные",
+                        "task_name": "task"
+                    },
+                    {
+                        "deadline": "Данные",
+                        "readiness": "yes",
+                        "report": "Данные",
+                        "task_name": "employee"
+                    }
+                ]
+            },
+            {
+                "name": "employee",
+                "persents": "0%",
+                "tasks": [
+                ]
+            }
+        ],
+        "group_name": "CoolGuys",
+        "group_persent": "50%"
+    },
+    {
+        "employee": [
+            {
+                "name": "Данные",
+                "persents": "0%",
+                "tasks": [
+                    {
+                        "deadline": "Данные",
+                        "readiness": "Данные",
+                        "report": "Данные",
+                        "task_name": "task"
+                    }
+                ]
+            },
+            {
+                "name": "John1",
+                "persents": "50%",
+                "tasks": [
+                    {
+                        "deadline": "21.02",
+                        "readiness": "no",
+                        "report": "asddd",
+                        "task_name": "make smth"
+                    },
+                    {
+                        "deadline": "22.02",
+                        "readiness": "yes",
+                        "report": "asddd",
+                        "task_name": "make smth_1"
+                    }
+                ]
+            },
+            {
+                "name": "Sara1",
+                "persents": "0%",
+                "tasks": [
+                    {
+                        "deadline": "21.02",
+                        "readiness": "no",
+                        "report": "asddd",
+                        "task_name": "make smth"
+                    }
+                ]
+            },
+            {
+                "name": "Данные",
+                "persents": "0%",
+                "tasks": [
+                    {
+                        "deadline": "Данные",
+                        "readiness": "Данные",
+                        "report": "Данные",
+                        "task_name": "task"
+                    }
+                ]
+            }
+        ],
+        "group_name": "second_group",
+        "group_persent": "0%"
+    }
+]
+}

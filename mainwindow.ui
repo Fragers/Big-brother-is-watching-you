@@ -360,10 +360,8 @@ QMenu::item:selected { /* when user selects item using mouse or keyboard */
     <property name="title">
      <string>Server</string>
     </property>
-    <addaction name="actionLoad_file"/>
-    <addaction name="actionUpload_file"/>
-    <addaction name="actionConnect"/>
     <addaction name="actionLoad_http_file"/>
+    <addaction name="actionUpload_http_File"/>
    </widget>
    <addaction name="menu_flie"/>
    <addaction name="menuOther"/>
@@ -428,6 +426,11 @@ background-color: #404040</string>
   <action name="actionSave_as">
    <property name="text">
     <string>&amp;Save as</string>
+   </property>
+  </action>
+  <action name="actionUpload_http_File">
+   <property name="text">
+    <string>Upload http file</string>
    </property>
   </action>
  </widget>

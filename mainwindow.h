@@ -19,6 +19,8 @@
 #include<QMessageBox>
 #include "chart.h"
 #include"httpserver.h"
+#include"postrequest.h"
+#include"gethttpfile.h"
 namespace Ui {
 class MainWindow;
 }
@@ -50,7 +52,8 @@ public:
     void setNewGroup();
 
     void initStartFunc();
-
+    postRequest* postRequester;
+    getHttpFile* getter;
 private:
     Ui::MainWindow *ui;
     chart *window;
@@ -85,6 +88,8 @@ public slots: //для реализации сигнала selectionChanged у Q
     void sockReady();
     void sockDisc();
     void getFileHttp();
+    void uploadFileHttp();
+    void upload();
 //    void on_install_clicked();
 
 //    void on_ConnectTo_clicked();

@@ -5,17 +5,23 @@ QT += network charts
 HEADERS += \
     createnewfile.h \
     donutbreakdownchart.h \
+    gethttpfile.h \
     httpserver.h \
     initstart.h \
     mainslice.h \
+    parseitems.h \
+    postrequest.h \
     savedia.h
 
 SOURCES += \
     createnewfile.cpp \
     donutbreakdownchart.cpp \
+    gethttpfile.cpp \
     httpserver.cpp \
     initstart.cpp \
     mainslice.cpp \
+    parseitems.cpp \
+    postrequest.cpp \
     savedia.cpp
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -54,6 +60,7 @@ FORMS += \
     createnewfile.ui \
     initstart.ui \
     mainwindow.ui \
+    parseitems.ui \
     savedia.ui
     #widget.ui
 

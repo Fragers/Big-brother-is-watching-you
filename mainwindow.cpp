@@ -12,24 +12,29 @@
 #include"savedia.h"
 #include"initstart.h"
 #include<QLayout>
+#include<QFileInfo>
+#include"parseitems.h"
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
 
     ui->setupUi(this);
 
     /*Server*/
 
-    socket = new QTcpSocket(this);
-        connect(socket, SIGNAL(readyRead()), this, SLOT(sockReady()));
-        connect(socket, SIGNAL(disconnected()), this, SLOT(sockDisc()));
+//    socket = new QTcpSocket(this);
+//        connect(socket, SIGNAL(readyRead()), this, SLOT(sockReady()));
+//        connect(socket, SIGNAL(disconnected()), this, SLOT(sockDisc()));
 
-        connect(ui->actionLoad_file, SIGNAL(triggered()), this, SLOT(loadTriggered()));
-        connect(ui->actionUpload_file, SIGNAL(triggered()), this, SLOT(loadTriggered()));
-        connect(ui->actionConnect, SIGNAL(triggered()), this, SLOT(connectTriggered()));
+//        connect(ui->actionLoad_file, SIGNAL(triggered()), this, SLOT(loadTriggered()));
+//        connect(ui->actionUpload_file, SIGNAL(triggered()), this, SLOT(loadTriggered()));
+//        connect(ui->actionConnect, SIGNAL(triggered()), this, SLOT(connectTriggered()));
     httpServ = new httpServer();
+    postRequester = new postRequest();
         connect(httpServ, &httpServer::onReady, this, &MainWindow::getFileHttp);
         connect(ui->actionLoad_http_file, SIGNAL(triggered()), httpServ, SLOT(getData()));
+    connect(ui->actionUpload_http_File, SIGNAL(triggered()), this, SLOT(uploadFileHttp()));
     /*Server*/
-
+    getter = new getHttpFile();
+    connect(getter, SIGNAL(onReady()), this, SLOT(upload()));
     curPath = new QLabel;
     ui->statusbar->addWidget(curPath);
 
@@ -80,18 +85,34 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
      //и обновить состояние кнопок:
     //updateActions();
 }
-
+void MainWindow::upload(){
+    flagGetFile = 1;
+    initModel();
+}
 void MainWindow::getFileHttp(){
     if(!isSaved){
         checkSaveDia();
     }
 
-     file1.setFileName("E://qt_creator//projects//123//123//webFiles//testFile.json");
-        flagGetFile = 1;
-        initModel();
+    parseItems* diaPar = new parseItems(httpServ->newList);
 
+    diaPar->exec();
+    if(diaPar->enabled.isEmpty())
+        return;
+    else{
+           file1.setFileName("E://qt_creator//projects//123//123//webFiles//"+diaPar->enabled);
+           getter->curFile = diaPar->enabled;
+           getter->getData();
+//           flagGetFile = 1;
+//           initModel();
+    }
+}
 
-
+void MainWindow::uploadFileHttp(){
+    QFileInfo fileInfo(file1.fileName().toUtf8());
+    postRequester->curName = fileInfo.fileName().toUtf8();
+    postRequester->dt = QString::fromStdString(docToPush.toStdString());
+    postRequester->postData();
 }
 
 void MainWindow::initStartFunc(){
@@ -598,67 +619,3 @@ void MainWindow::uploadTriggered()
 
 }
 
-//Сервер
-
-//void MainWindow::on_install_clicked()
-//{
-//    if(socket->isOpen()){
-//        socket->write("Read");
-//        socket->waitForBytesWritten(2000);
-//    }else{
-//        QMessageBox::information(this, "Иноформация", "Соединение не установлено");
-//    }
-
-
-//}
-
-
-
-//void MainWindow::on_ConnectTo_clicked()
-//{
-
-//    socket->connectToHost("127.0.0.1", 5555);
-//}
-
-//void MainWindow::sockDisc(){
-//    socket->deleteLater();
-//}
-
-//void MainWindow::sockReady(){
-//    if(socket->waitForConnected(500)){
-//        socket->waitForReadyRead(500);
-//        Data = socket->readAll();
-//        testDoc = QJsonDocument::fromJson(Data, &testDocError);
-//        if(testDocError.errorString().toInt() == QJsonParseError::NoError){
-//            if(testDoc.object().value("type").toString() == "connect" && testDoc.object().value("status").toString() == "yes"){
-//                QMessageBox::information(this, "информация", "соединение установлено");
-
-//            }else{
-//                flagGetFile = 1;
-//                qDebug() << Data;
-//                if(file1.open(QIODevice::WriteOnly|QIODevice::Text)){
-//                    file1.write(testDoc.toJson());
-//                }
-//                file1.close();
-//                initModel();
-
-//            }
-//        }else
-//            QMessageBox::information(this, "информация", "соединение не установлено");
-//        qDebug() << Data;
-//    }
-//}
-
-//void MainWindow::on_pushButton_clicked()
-//{
-//    if(socket->isOpen()){
-//        socket->write("Write");
-//        socket->waitForBytesWritten(1000);
-//        socket->write(docToPush);
-//    }else{
-//        QMessageBox::information(this, "Иноформация", "Соединение не установлено");
-//    }
-
-//}
-
-//todo кидаем запрос на чтение в формате
