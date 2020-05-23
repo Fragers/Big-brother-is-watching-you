@@ -37,5 +37,4 @@ void httpServer::onResult(QNetworkReply *reply){
         }
         emit onReady();
     }
-
 }

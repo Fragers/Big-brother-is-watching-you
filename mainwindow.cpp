@@ -27,14 +27,18 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 //        connect(ui->actionLoad_file, SIGNAL(triggered()), this, SLOT(loadTriggered()));
 //        connect(ui->actionUpload_file, SIGNAL(triggered()), this, SLOT(loadTriggered()));
 //        connect(ui->actionConnect, SIGNAL(triggered()), this, SLOT(connectTriggered()));
-    httpServ = new httpServer();
+
     postRequester = new postRequest();
-        connect(httpServ, &httpServer::onReady, this, &MainWindow::getFileHttp);
-        connect(ui->actionLoad_http_file, SIGNAL(triggered()), httpServ, SLOT(getData()));
     connect(ui->actionUpload_http_File, SIGNAL(triggered()), this, SLOT(uploadFileHttp()));
+
+    httpServ = new httpServer();
+    connect(httpServ, &httpServer::onReady, this, &MainWindow::getFileHttp);
+    connect(ui->actionLoad_http_file, SIGNAL(triggered()), httpServ, SLOT(getData()));
+
     /*Server*/
     getter = new getHttpFile();
-    connect(getter, SIGNAL(onReady()), this, SLOT(upload()));
+    connect(getter, SIGNAL(onReady()), this, SLOT(load()));
+
     curPath = new QLabel;
     ui->statusbar->addWidget(curPath);
 
@@ -85,10 +89,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
      //и обновить состояние кнопок:
     //updateActions();
 }
-void MainWindow::upload(){
+void MainWindow::load(){
     flagGetFile = 1;
     initModel();
 }
+
+//
 void MainWindow::getFileHttp(){
     if(!isSaved){
         checkSaveDia();
@@ -100,11 +106,10 @@ void MainWindow::getFileHttp(){
     if(diaPar->enabled.isEmpty())
         return;
     else{
-           file1.setFileName("E://qt_creator//projects//123//123//webFiles//"+diaPar->enabled);
+           QString path = (const char*)WEBDIR;
+           file1.setFileName(path+diaPar->enabled);
            getter->curFile = diaPar->enabled;
            getter->getData();
-//           flagGetFile = 1;
-//           initModel();
     }
 }
 

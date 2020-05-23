@@ -20,7 +20,8 @@ void getHttpFile::onResult(QNetworkReply *reply){
         qDebug() << reply->errorString();
     } else {
         QByteArray data = reply->readAll();
-        QFile file("E://qt_creator//projects//123//123//webFiles//"+curFile);
+        QString path = (const char*)WEBDIR;
+        QFile file(path+curFile);
         if(file.open(QIODevice::WriteOnly)){
             file.write(data);
             file.close();

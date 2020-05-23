@@ -89,7 +89,7 @@ public slots: //для реализации сигнала selectionChanged у Q
     void sockDisc();
     void getFileHttp();
     void uploadFileHttp();
-    void upload();
+    void load();
 //    void on_install_clicked();
 
 //    void on_ConnectTo_clicked();
