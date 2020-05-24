@@ -28,30 +28,31 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 //        connect(ui->actionUpload_file, SIGNAL(triggered()), this, SLOT(loadTriggered()));
 //        connect(ui->actionConnect, SIGNAL(triggered()), this, SLOT(connectTriggered()));
 
+    /*Server*/
+    //upload
     postRequester = new postRequest();
     connect(ui->actionUpload_http_File, SIGNAL(triggered()), this, SLOT(uploadFileHttp()));
 
+    /*loading*/
+
+    //parse
     httpServ = new httpServer();
     connect(httpServ, &httpServer::onReady, this, &MainWindow::getFileHttp);
     connect(ui->actionLoad_http_file, SIGNAL(triggered()), httpServ, SLOT(getData()));
-
-    /*Server*/
+    //load file
     getter = new getHttpFile();
     connect(getter, SIGNAL(onReady()), this, SLOT(load()));
+    /*Server*/
 
     curPath = new QLabel;
     ui->statusbar->addWidget(curPath);
 
+    //File actions
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
-
     connect(ui->action_Save, SIGNAL(triggered()), this, SLOT(saveClicked()));
-
     connect(ui->actionSave_as, SIGNAL(triggered()), this, SLOT(saveAs()));
-
     connect(ui->action_Open, SIGNAL(triggered()), this, SLOT(openClicked()));
-
     connect(ui->action_Exit, SIGNAL(triggered()), this, SLOT(exitApp()));
-
     connect(ui->actionNew_file, SIGNAL(triggered()), this, SLOT(newFile()));
 
 
@@ -60,34 +61,25 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 
 
-    connect(ui->insertRowAction,SIGNAL(clicked()),this,SLOT(insertRow()));
-
-
-    /*columns*/
+    /*columns(not used)*/
 //    connect(ui->insertColumnAction,SIGNAL(clicked()),this,SLOT(insertColumn()));
-
 //    connect(ui->removeColumnAction, SIGNAL(clicked()),this,SLOT(removeColumn()));
 
+
+    //model actions
+    connect(ui->insertRowAction,SIGNAL(clicked()),this,SLOT(insertRow()));
     connect(ui->removeRowAction,SIGNAL(clicked()),this,SLOT(removeRow()));
-
-
     connect(ui->insertChildAction, SIGNAL(clicked()),this,SLOT(insertChild()));
 
+    //chart
     connect(ui->actionShow_chart, SIGNAL(triggered()), this, SLOT(showChart()));
-
 
     /*ShortCuts*/
     ui->action_Save->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_S));
     ui->action_Open->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_O));
     ui->action_Exit->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
     ui->actionNew_file->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_N));
-
     /*ShortCuts*/
-
-
-
-     //и обновить состояние кнопок:
-    //updateActions();
 }
 void MainWindow::load(){
     flagGetFile = 1;
@@ -103,7 +95,7 @@ void MainWindow::getFileHttp(){
     parseItems* diaPar = new parseItems(httpServ->newList);
 
     diaPar->exec();
-    if(diaPar->enabled.isEmpty())
+    if(diaPar->enabled.isEmpty() || diaPar->clicked == false)
         return;
     else{
            QString path = (const char*)WEBDIR;
@@ -577,50 +569,50 @@ void MainWindow::loadTriggered()
 
 
 
-void MainWindow::connectTriggered()
-{
+//void MainWindow::connectTriggered()
+//{
 
-    socket->connectToHost("127.0.0.1", 5555);
-}
+//    socket->connectToHost("127.0.0.1", 5555);
+//}
 
-void MainWindow::sockDisc(){
-    socket->deleteLater();
-}
+//void MainWindow::sockDisc(){
+//    socket->deleteLater();
+//}
 
-void MainWindow::sockReady(){
-    if(socket->waitForConnected(500)){
-        socket->waitForReadyRead(500);
-        Data = socket->readAll();
-        testDoc = QJsonDocument::fromJson(Data, &testDocError);
-        if(testDocError.errorString().toInt() == QJsonParseError::NoError){
-            if(testDoc.object().value("type").toString() == "connect" && testDoc.object().value("status").toString() == "yes"){
-                QMessageBox::information(this, "информация", "соединение установлено");
+//void MainWindow::sockReady(){
+//    if(socket->waitForConnected(500)){
+//        socket->waitForReadyRead(500);
+//        Data = socket->readAll();
+//        testDoc = QJsonDocument::fromJson(Data, &testDocError);
+//        if(testDocError.errorString().toInt() == QJsonParseError::NoError){
+//            if(testDoc.object().value("type").toString() == "connect" && testDoc.object().value("status").toString() == "yes"){
+//                QMessageBox::information(this, "информация", "соединение установлено");
 
-            }else{
-                flagGetFile = 1;
-                qDebug() << Data;
-                if(file1.open(QIODevice::WriteOnly|QIODevice::Text)){
-                    file1.write(testDoc.toJson());
-                }
-                file1.close();
-                initModel();
+//            }else{
+//                flagGetFile = 1;
+//                qDebug() << Data;
+//                if(file1.open(QIODevice::WriteOnly|QIODevice::Text)){
+//                    file1.write(testDoc.toJson());
+//                }
+//                file1.close();
+//                initModel();
 
-            }
-        }else
-            QMessageBox::information(this, "информация", "соединение не установлено");
-        qDebug() << Data;
-    }
-}
+//            }
+//        }else
+//            QMessageBox::information(this, "информация", "соединение не установлено");
+//        qDebug() << Data;
+//    }
+//}
 
-void MainWindow::uploadTriggered()
-{
-    if(socket->isOpen()){
-        socket->write("Write");
-        socket->waitForBytesWritten(1000);
-        socket->write(docToPush);
-    }else{
-        QMessageBox::information(this, "Иноформация", "Соединение не установлено");
-    }
+//void MainWindow::uploadTriggered()
+//{
+//    if(socket->isOpen()){
+//        socket->write("Write");
+//        socket->waitForBytesWritten(1000);
+//        socket->write(docToPush);
+//    }else{
+//        QMessageBox::information(this, "Иноформация", "Соединение не установлено");
+//    }
 
-}
+//}
 

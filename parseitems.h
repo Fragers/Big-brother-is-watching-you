@@ -26,6 +26,7 @@ public:
     ~parseItems();
     QString enabled;
    // QStringList items;
+    bool clicked = false;
 private slots:
     void on_listWidget_currentTextChanged(const QString &currentText);
 

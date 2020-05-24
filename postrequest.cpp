@@ -6,7 +6,9 @@ postRequest::postRequest( QObject *parent) : QObject(parent)
     connect(manager, &QNetworkAccessManager::finished, this, &postRequest::onResult);
 }
 
-postRequest::~postRequest(){};
+postRequest::~postRequest(){
+    delete manager;
+};
 
 void postRequest::postData(){
     QUrl url("http://kappa.cs.petrsu.ru/~simagin/test.php");
@@ -27,6 +29,7 @@ void postRequest::onResult(QNetworkReply *reply){
         qDebug() << reply->errorString();
     } else {
         qDebug() << "successfully uploaded";
+        reply->deleteLater();
         emit onReady();
     }
 

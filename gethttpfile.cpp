@@ -26,6 +26,7 @@ void getHttpFile::onResult(QNetworkReply *reply){
             file.write(data);
             file.close();
         }
+        reply->deleteLater();
         emit onReady();
     }
 

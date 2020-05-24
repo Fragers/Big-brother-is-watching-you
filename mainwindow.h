@@ -73,9 +73,9 @@ private slots: //слоты для действий, выполняемых по
     void saveClicked();
     void loadTriggered();
 
-    void uploadTriggered();
+    //void uploadTriggered();
 
-    void connectTriggered();
+    //void connectTriggered();
 
     void exitApp();
 
@@ -85,8 +85,8 @@ private slots: //слоты для действий, выполняемых по
 public slots: //для реализации сигнала selectionChanged у QTreeView::selectionModel
     void updateActions(const QItemSelection &,const QItemSelection &);
     void updateActions2();
-    void sockReady();
-    void sockDisc();
+    //void sockReady();
+    //void sockDisc();
     void getFileHttp();
     void uploadFileHttp();
     void load();

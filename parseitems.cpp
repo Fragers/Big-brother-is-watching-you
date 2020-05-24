@@ -22,5 +22,6 @@ void parseItems::on_listWidget_currentTextChanged(const QString &currentText)
 
 void parseItems::on_pushButton_clicked()
 {
+   clicked = true;
    close();
 }

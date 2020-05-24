@@ -35,6 +35,7 @@ void httpServer::onResult(QNetworkReply *reply){
             }
 
         }
+        reply->deleteLater();
         emit onReady();
     }
 }
