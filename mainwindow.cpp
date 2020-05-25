@@ -305,8 +305,12 @@ void MainWindow::initModel(){
     connect(ui->treeView->selectionModel(),SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
              this, SLOT(updateActions(const QItemSelection&,const QItemSelection&)));
 
-    for (int column = 0; column < model->columnCount(); ++column)
+    for (int column = 0; column < model->columnCount(); ++column){
+        //ui->treeView->setColumnWidth(column, );
         ui->treeView->resizeColumnToContents(column);
+        //ui->treeView->horizontalHeader()->setSectionResizeMode(colmun, QHeaderView::Stretch);
+        ui->treeView->header()->setSectionResizeMode(QHeaderView::Fixed);
+    }
 
     curPath->setText(file1.fileName());
 
