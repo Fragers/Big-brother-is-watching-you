@@ -1,3 +1,3 @@
 # Big-brother-is-watching-you
  
-![Screenshot](Other/screen.png)
+![Screenshot](Other/screenshotCommon.png)
