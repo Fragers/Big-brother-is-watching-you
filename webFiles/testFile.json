@@ -9,19 +9,19 @@
                     {
                         "deadline": "13.05.2020",
                         "readiness": "yes",
-                        "report": "Данные",
+                        "report": "Data",
                         "task_name": "task3"
                     },
                     {
                         "deadline": "13.05.2020",
                         "readiness": "in progress",
-                        "report": "Данные",
+                        "report": "Data",
                         "task_name": "task2"
                     },
                     {
                         "deadline": "30.05.2022",
                         "readiness": "in progress",
-                        "report": "Данные",
+                        "report": "Data",
                         "task_name": "task1"
                     }
                 ]
@@ -33,7 +33,7 @@
                     {
                         "deadline": "Данные",
                         "readiness": "in progress",
-                        "report": "Данные",
+                        "report": "Data",
                         "task_name": "task1"
                     }
                 ]
@@ -51,7 +51,7 @@
                     {
                         "deadline": "Данные",
                         "readiness": "yes",
-                        "report": "Данные",
+                        "report": "Data",
                         "task_name": "task1"
                     }
                 ]
@@ -63,7 +63,7 @@
                     {
                         "deadline": "13.04.2020",
                         "readiness": "in progress",
-                        "report": "Данные",
+                        "report": "Data",
                         "task_name": "task1"
                     }
                 ]
@@ -81,7 +81,7 @@
                     {
                         "deadline": "Данные",
                         "readiness": "yes",
-                        "report": "Данные",
+                        "report": "Data",
                         "task_name": "task1"
                     }
                 ]

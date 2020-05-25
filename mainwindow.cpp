@@ -80,6 +80,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->action_Exit->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
     ui->actionNew_file->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_N));
     /*ShortCuts*/
+    this->setWindowTitle("Big brother is watching you");
 }
 void MainWindow::load(){
     flagGetFile = 1;
@@ -357,8 +358,10 @@ void MainWindow::insertChild() {
             if(type == "employee"){
                 if(column == 2)
                     model->setData(child, QVariant("in progress"), Qt::EditRole);
+                else if (column == 3)
+                    model->setData(child, QVariant("Deadline"), Qt::EditRole);
                 else
-                    model->setData(child, QVariant("Данные"), Qt::EditRole);
+                    model->setData(child, QVariant("Comment"), Qt::EditRole);
             }
             else
                 model->setData(child, QVariant(""), Qt::EditRole);
@@ -401,8 +404,10 @@ void MainWindow::insertRow() {
             if(model1->getType(index) == "task"){
                 if(column == 2)
                     model->setData(child, QVariant("in progress"), Qt::EditRole);
+                else if(column == 3)
+                    model->setData(child, QVariant("Deadline"), Qt::EditRole);
                 else
-                    model->setData(child, QVariant("Данные"), Qt::EditRole);
+                    model->setData(child, QVariant("Comment"), Qt::EditRole);
             }
             else
                 model->setData(child, QVariant(""), Qt::EditRole);
@@ -460,26 +465,27 @@ void MainWindow::updateActions() {
         TreeItem* parIt = model1->getItem(pInd);
         QString parName = parIt->data(0).toString();
         ///////////
-        if (ui->treeView->selectionModel()->currentIndex().parent().isValid())
-         this->setWindowTitle(tr("(row,col)=(%1,%2)").arg(row).arg(column));
-        else
-         this->setWindowTitle(tr("(row,col)=(%1,%2) ВЕРХ").arg(row).arg(column));
+        //test selection
+//        if (ui->treeView->selectionModel()->currentIndex().parent().isValid())
+//         this->setWindowTitle(tr("(row,col)=(%1,%2)").arg(row).arg(column));
+//        else
+//         this->setWindowTitle(tr("(row,col)=(%1,%2) ВЕРХ").arg(row).arg(column));
         ///////////
         if(type == "task"){
-            ui->insertRowAction->setText(QString("Добавить задачу для\n %1").arg(parIt->data(0).toString()));
+            ui->insertRowAction->setText(QString("Add a new task for\n %1").arg(parIt->data(0).toString()));//Добавить задачу для
             ui->insertChildAction->setText("");
-            ui->removeRowAction->setText(QString("Удалить задачу\n %1").arg(curItem->data(0).toString()));
+            ui->removeRowAction->setText(QString("Delete a task\n %1").arg(curItem->data(0).toString()));//Удалить задачу
         }
         if(type == "group"){
-            ui->insertRowAction->setText(QString("Добавить новую группу"));
-            ui->insertChildAction->setText(QString("Добавить работника\nв группу\n %1").arg(curItem->data(0).toString()));
-            ui->removeRowAction->setText(QString("Удалить группу\n %1").arg(curItem->data(0).toString()));
+            ui->insertRowAction->setText(QString("Add a new group"));//Добавить новую группу
+            ui->insertChildAction->setText(QString("Add a new employee\nto group\n %1").arg(curItem->data(0).toString()));//Добавить работника\nв группу\n
+            ui->removeRowAction->setText(QString("Delete a group\n %1").arg(curItem->data(0).toString()));//Удалить группу
 
         }
         if(type == "employee"){
-            ui->insertRowAction->setText(QString("Добавить нового\nсотрудника в группу\n%1").arg(parName));
-            ui->insertChildAction->setText(QString("Добавить задание для\n %1").arg(curItem->data(0).toString()));
-            ui->removeRowAction->setText(QString("Удалить работника\n %1").arg(curItem->data(0).toString()));
+            ui->insertRowAction->setText(QString("Add a new employee\nto group\n%1").arg(parName));
+            ui->insertChildAction->setText(QString("Add a new task for\n %1").arg(curItem->data(0).toString()));
+            ui->removeRowAction->setText(QString("Delete an employee\n %1").arg(curItem->data(0).toString()));
 
         }
     }else{
@@ -503,11 +509,14 @@ void MainWindow::updateActions() {
         QItemSelection selection;
         selection.select(ind, ind);
         newUpdate = 0;
+
         ui->treeView->selectionModel()->setCurrentIndex(ind, QItemSelectionModel::Select | QItemSelectionModel::Rows);
         ui->treeView->closePersistentEditor(ui->treeView->selectionModel()->currentIndex());
+
         connect(model1, SIGNAL(dataChanged(QModelIndex, QModelIndex)),
               this, SLOT(updateActions2()));
         updateActions();
+
     }
 
 }
