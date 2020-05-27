@@ -9,19 +9,19 @@
                     {
                         "deadline": "13.05.2020",
                         "readiness": "yes",
-                        "report": "Data",
+                        "report": "Данные",
                         "task_name": "task3"
                     },
                     {
                         "deadline": "13.05.2020",
                         "readiness": "in progress",
-                        "report": "Data",
+                        "report": "Данные",
                         "task_name": "task2"
                     },
                     {
                         "deadline": "30.05.2022",
                         "readiness": "in progress",
-                        "report": "Data",
+                        "report": "Данные",
                         "task_name": "task1"
                     }
                 ]
@@ -31,9 +31,9 @@
                 "persents": "0%",
                 "tasks": [
                     {
-                        "deadline": "Данные",
+                        "deadline": "Deadline",
                         "readiness": "in progress",
-                        "report": "Data",
+                        "report": "Comment",
                         "task_name": "task1"
                     }
                 ]
@@ -46,12 +46,18 @@
         "employee": [
             {
                 "name": "employee2",
-                "persents": "100%",
+                "persents": "50%",
                 "tasks": [
+                    {
+                        "deadline": "Deadline",
+                        "readiness": "in progress",
+                        "report": "Comment",
+                        "task_name": "task2"
+                    },
                     {
                         "deadline": "Данные",
                         "readiness": "yes",
-                        "report": "Data",
+                        "report": "Данные",
                         "task_name": "task1"
                     }
                 ]
@@ -63,32 +69,32 @@
                     {
                         "deadline": "13.04.2020",
                         "readiness": "in progress",
-                        "report": "Data",
+                        "report": "Данные",
                         "task_name": "task1"
                     }
                 ]
             }
         ],
         "group_name": "group2",
-        "group_persent": "50%"
+        "group_persent": "0%"
     },
     {
         "employee": [
             {
                 "name": "employee1",
-                "persents": "100%",
+                "persents": "0%",
                 "tasks": [
                     {
-                        "deadline": "Данные",
-                        "readiness": "yes",
-                        "report": "Data",
+                        "deadline": "Deadline",
+                        "readiness": "in progress",
+                        "report": "Comment",
                         "task_name": "task1"
                     }
                 ]
             }
         ],
         "group_name": "group3",
-        "group_persent": "100%"
+        "group_persent": "0%"
     }
 ]
 }

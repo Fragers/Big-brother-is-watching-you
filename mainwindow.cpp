@@ -96,6 +96,7 @@ void MainWindow::getFileHttp(){
     parseItems* diaPar = new parseItems(httpServ->newList);
 
     diaPar->exec();
+
     if(diaPar->enabled.isEmpty() || diaPar->clicked == false)
         return;
     else{
@@ -107,6 +108,7 @@ void MainWindow::getFileHttp(){
 }
 
 void MainWindow::uploadFileHttp(){
+    saveClicked();
     QFileInfo fileInfo(file1.fileName().toUtf8());
     postRequester->curName = fileInfo.fileName().toUtf8();
     postRequester->dt = QString::fromStdString(docToPush.toStdString());
@@ -301,6 +303,7 @@ void MainWindow::initModel(){
 
     ui->treeView->setFont(monospace);
     ui->treeView->setModel(model);
+    this->setFont(monospace);
     //QFont font(":/MODERNE_SANS.ttf");
     connect(ui->treeView->selectionModel(),SIGNAL(selectionChanged(const QItemSelection&,const QItemSelection&)),
              this, SLOT(updateActions(const QItemSelection&,const QItemSelection&)));
@@ -315,7 +318,6 @@ void MainWindow::initModel(){
     curPath->setText(file1.fileName());
 
     flagGetFile = 0;
-
     newUpdate = 1;
     hasData = 1;
     isSaved = false;

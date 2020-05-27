@@ -69,8 +69,6 @@ QVariant TreeModel::data (const QModelIndex &index, int role) const {
                 return  QColor(229, 43, 80, 100);
 
         }
-
-
     }
     if(item->type == "employee"){
         int chCount = item->childCount();
@@ -78,7 +76,6 @@ QVariant TreeModel::data (const QModelIndex &index, int role) const {
             QString ans = QString::number(0) + "%";
             item->setData(2, ans);
             goto tex;
-
         }
         double yes = 0;
         for(int i = 0; i < chCount; i++){
@@ -92,7 +89,6 @@ QVariant TreeModel::data (const QModelIndex &index, int role) const {
         item->setData(2, ans);
         if(std::abs(st - 100) <= 0.001 && role == Qt::BackgroundColorRole)
             return QColor("#adffad");
-
     }
     tex:
     if(item->type == "group"){
@@ -114,7 +110,6 @@ QVariant TreeModel::data (const QModelIndex &index, int role) const {
         item->setData(2, ans);
         if(std::abs(st - 100) <= 0.001 && role == Qt::BackgroundColorRole)
             return QColor("#99ff99");
-
     }
 
     tex1:
