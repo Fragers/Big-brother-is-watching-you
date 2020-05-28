@@ -268,8 +268,9 @@ void MainWindow::saveClicked(){
 }
 
 void MainWindow::initModel(){
+    std::string path = (const char*)WEBDIR;
     if(flagGetFile == 0)
-        file1.setFileName(QFileDialog::getOpenFileName(nullptr, "", "./..", "*.json"));
+        file1.setFileName(QFileDialog::getOpenFileName(nullptr, "", path.c_str(), "*.json"));
 
     if(file1.open(QIODevice::ReadOnly|QFile::Text)){
         docToPush = file1.readAll();
