@@ -1,3 +1,4 @@
+
 #include "mainwindow.h"
 #include "treemodel.h"
 #include "ui_mainwindow.h"
@@ -81,6 +82,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->actionNew_file->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_N));
     /*ShortCuts*/
     this->setWindowTitle("Big brother is watching you");
+    this->setWindowIcon(QIcon(":/Other/scale_1200.png"));
 }
 void MainWindow::load(){
     flagGetFile = 1;
@@ -288,10 +290,7 @@ void MainWindow::initModel(){
 
     QStringList headers;
 
-    headers <<  "Отчет1" << "выполнени1е" << "срок1";
-
-    //Загружаем данные в модель:
-    //delete model1;
+    // headers <<  "Отчет" << "выполнени1е" << "срок1";
     if(hasData)
         delete model1;
     TreeModel *model = new TreeModel(headers, doc);
@@ -329,16 +328,10 @@ void MainWindow::insertChild() {
      //Получаем модельный индекс и модель элемента:
     QModelIndex index = ui->treeView->selectionModel()->currentIndex();
     QAbstractItemModel *model = ui->treeView->model();
-
-    if(model1->getType(index) == "task")
-        return;
+    if(model1->getType(index) == "task") return;
      //Вставляем данные:
-    //QModelIndex parInd = model1->parent(index);
     TreeItem * parIt = static_cast<TreeItem*>(index.internalPointer());
-
-
     index = model1->getIn(index.row(), 0, parIt);
-
     //index = it;
     if (model->columnCount(index) == 0) {
         if (!model->insertColumn(0, index)) return;
@@ -523,9 +516,7 @@ void MainWindow::updateActions() {
         connect(model1, SIGNAL(dataChanged(QModelIndex, QModelIndex)),
               this, SLOT(updateActions2()));
         updateActions();
-
     }
-
 }
 
 void MainWindow::updateActions2(){

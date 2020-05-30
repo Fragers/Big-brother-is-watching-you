@@ -58,37 +58,21 @@ class TreeModel : public QAbstractItemModel {
     bool insertRows(int position, int rows, const QModelIndex &parent = QModelIndex()) override;
     bool removeRows(int position, int rows, const QModelIndex &parent = QModelIndex()) override;
       //вставка и удаление столбцов и строк
-    void test_herni(const QModelIndex &gr) const;
 
-    QModelIndex getIn(int row, int column, TreeItem* item);
-
+    QModelIndex getIn(int row, int column, TreeItem* item); //получить индекс элемента
     QJsonArray  docAr;
     QJsonParseError docError;
-
     QFile file1;
-
-    QStandardItem* nameWorker;
-    QStandardItem* ageWorker;
-    void setupModelData(const QJsonDocument &lines, TreeItem *parent);
-
+    void setupModelData(const QJsonDocument &lines, TreeItem *parent);//заполнить модель первоначальными данными
     QString getType(QModelIndex &index); //возвращает тип иерархический тип элемента(корень, группа, работник, задача)
     void setType(QModelIndex &index, QString type); //устанговить тип
-
-    QVector<QPair<QString, double>> chartData;
-    QVector<QPair<QString, double>> getChartData();
     QVector<int>tst;
     TreeItem *getItem(const QModelIndex &index) const;
     TreeItem* getRoot();                //вовзращает указатель на корневой элемент
     bool checkEdit(const QModelIndex &index) const;
 
     bool checkNotEmpty();
-
-
 private:
-
-  //внутренний метод для установки данных модели
-
-  //внутренний метод для получения элемента
     int wtfIDid = 0;
     TreeItem *rootItem; //ссылка на корневой узел
 };

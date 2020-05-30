@@ -67,7 +67,9 @@ QVariant TreeModel::data (const QModelIndex &index, int role) const {
                 return  QColor(250, 231, 181, 240);
             else
                 return  QColor(229, 43, 80, 100);
-
+        }
+        if(item->type == "task"){
+            return  QColor(229, 43, 80, 100);
         }
     }
     if(item->type == "employee"){
@@ -205,7 +207,7 @@ void TreeModel::setupModelData(const QJsonDocument &lines, TreeItem *parent) {
         perD.resize(perD.size()-1);;
         double pr = perD.toDouble();
 
-        chartData.push_back(qMakePair(group_names.toString(), pr));
+//        chartData.push_back(qMakePair(group_names.toString(), pr));
         QVector <QVariant> columnData_gr;
         QString s = group_names.toString();
 
@@ -355,9 +357,9 @@ bool TreeModel::setData(const QModelIndex &index, const QVariant &value, int rol
     return result;
 }
 
-QVector<QPair<QString, double>> TreeModel::getChartData(){
-    return chartData;
-}
+//QVector<QPair<QString, double>> TreeModel::getChartData(){
+//    return chartData;
+//}
 
 
 bool TreeModel::setHeaderData(int section, Qt::Orientation orientation,

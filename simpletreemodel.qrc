@@ -18,5 +18,6 @@
         <file>Branches/branch-more.png</file>
         <file>Branches/branch-open.png</file>
         <file>Branches/vline.png</file>
+        <file>Other/scale_1200.png</file>
     </qresource>
 </RCC>

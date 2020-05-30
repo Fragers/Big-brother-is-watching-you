@@ -8,6 +8,7 @@ parseItems::parseItems(QStringList items, QWidget *parent) :
     ui->setupUi(this);
     ui->listWidget->clear();
     ui->listWidget->addItems(items);
+    this->setWindowTitle("Выберите файл");
 }
 
 parseItems::~parseItems()
