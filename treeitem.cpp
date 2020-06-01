@@ -5,7 +5,9 @@ TreeItem::TreeItem (const QVector<QVariant> &data, TreeItem *parent) {
  m_parentItem = parent;
  m_itemData = data;
 }
-
+QString TreeItem::getType(TreeItem *item){
+    return item->type;
+}
 TreeItem::~TreeItem() { qDeleteAll(m_childItems); }
 
 /*

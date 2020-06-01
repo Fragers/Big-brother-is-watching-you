@@ -33,7 +33,6 @@ void httpServer::onResult(QNetworkReply *reply){
                 newList.append(se);
                 //qDebug() << se;
             }
-
         }
         reply->deleteLater();
         emit onReady();

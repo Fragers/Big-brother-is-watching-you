@@ -136,8 +136,6 @@ void MainWindow::initStartFunc(){
         initModel();
 
     }
-
-
 }
 void MainWindow::checkSaveDia(){
 

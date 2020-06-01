@@ -2,8 +2,98 @@
 	"groups":[
     {
         "employee": [
+            {
+                "name": "employee2",
+                "persents": "0%",
+                "tasks": [
+                    {
+                        "deadline": "Deadline",
+                        "readiness": "in progress",
+                        "report": "Comment",
+                        "task_name": "task1"
+                    }
+                ]
+            },
+            {
+                "name": "employee4",
+                "persents": "0%",
+                "tasks": [
+                    {
+                        "deadline": "Deadline",
+                        "readiness": "in progress",
+                        "report": "Comment",
+                        "task_name": "task2"
+                    },
+                    {
+                        "deadline": "Deadline",
+                        "readiness": "in progress",
+                        "report": "Comment",
+                        "task_name": "task1"
+                    }
+                ]
+            },
+            {
+                "name": "employee3",
+                "persents": "0%",
+                "tasks": [
+                ]
+            },
+            {
+                "name": "employee1",
+                "persents": "0%",
+                "tasks": [
+                    {
+                        "deadline": "Deadline",
+                        "readiness": "in progress",
+                        "report": "Comment",
+                        "task_name": "task2"
+                    },
+                    {
+                        "deadline": "Deadline",
+                        "readiness": "in progress",
+                        "report": "Comment",
+                        "task_name": "task1"
+                    }
+                ]
+            }
         ],
         "group_name": "group",
+        "group_persent": "0%"
+    },
+    {
+        "employee": [
+            {
+                "name": "employee1",
+                "persents": "0%",
+                "tasks": [
+                    {
+                        "deadline": "Deadline",
+                        "readiness": "in progress",
+                        "report": "Comment",
+                        "task_name": "task1"
+                    },
+                    {
+                        "deadline": "Deadline",
+                        "readiness": "in progress",
+                        "report": "Comment",
+                        "task_name": "task4"
+                    },
+                    {
+                        "deadline": "Deadline",
+                        "readiness": "in progress",
+                        "report": "Comment",
+                        "task_name": "task3"
+                    },
+                    {
+                        "deadline": "Deadline",
+                        "readiness": "in progress",
+                        "report": "Comment",
+                        "task_name": "task2"
+                    }
+                ]
+            }
+        ],
+        "group_name": "group2",
         "group_persent": "0%"
     }
 ]

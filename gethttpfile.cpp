@@ -4,7 +4,6 @@ getHttpFile::getHttpFile( QObject *parent) : QObject(parent)
 {
     manager = new QNetworkAccessManager();
     connect(manager, &QNetworkAccessManager::finished, this, &getHttpFile::onResult);
-
 }
 
 void getHttpFile::getData(){
